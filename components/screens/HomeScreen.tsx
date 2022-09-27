@@ -1,9 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
+import Header from '../Header';
 
 export default function Home({ navigation }) {
   return (
     <>
+      <StatusBar
+        // backgroundColor={colors.cardBackground}
+        translucent={true}
+        style="dark"
+      />
+      <Header label="You're at home, baby." />
       <View style={styles.container}>
         <Text>You're at home, baby.</Text>
         <StatusBar style="auto" />

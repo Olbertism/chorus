@@ -12,6 +12,7 @@ import {
   TextStyle,
 } from 'react-native';
 import { chores, Chore } from '../../util/database/chores';
+import Header from '../Header';
 
 const ChoreItem = ({
   item,
@@ -62,7 +63,14 @@ export default function NewEntry({ navigation }) {
       </SafeAreaView>
       {selectedId ? (
         <View>
-          <Button title="Edit default values" onPress={() => navigation.navigate('EntryDefaults')} />
+          <Button
+            title="Edit default values"
+            onPress={() =>
+              navigation.navigate('EntryDefaults', {
+                choreId: selectedId,
+              })
+            }
+          />
         </View>
       ) : null}
       <View>
