@@ -1,3 +1,4 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
@@ -10,8 +11,11 @@ import {
   TouchableOpacity,
   ViewStyle,
   TextStyle,
+  Pressable,
 } from 'react-native';
+import { colors, styles } from '../../styles/constants';
 import { chores, Chore } from '../../util/database/chores';
+import { RootStackParamList } from '../../util/types';
 import Header from '../Header';
 
 const ChoreItem = ({
@@ -25,17 +29,24 @@ const ChoreItem = ({
   backgroundColor: ViewStyle;
   textColor: TextStyle;
 }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <Text style={[styles.title, textColor]}>{item.choreName}</Text>
+  <TouchableOpacity
+    onPress={onPress}
+    style={[styles.flatListItem, backgroundColor]}
+  >
+    <Text style={[styles.flatListText, textColor]}>{item.choreName}</Text>
   </TouchableOpacity>
 );
 
-export default function NewEntry({ navigation }) {
+type Props = NativeStackScreenProps<RootStackParamList, 'NewEntry'>;
+
+export default function NewEntry({ navigation }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const renderItem = ({ item }: { item: Chore }) => {
-    const backgroundColor = item.choreId === selectedId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.choreId === selectedId ? '#fff' : '#000';
+    const backgroundColor =
+      item.choreId === selectedId ? colors.primary : colors.secondary;
+    const color =
+      item.choreId === selectedId ? colors.secondary : colors.primary;
 
     return (
       <ChoreItem
@@ -49,38 +60,45 @@ export default function NewEntry({ navigation }) {
 
   return (
     <>
-      <View style={styles.container}>
-        <Text>Add a new entry</Text>
-        <StatusBar style="auto" />
-      </View>
-      <SafeAreaView>
-        <FlatList
-          data={chores}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.choreId}
-          extraData={selectedId}
-        />
-      </SafeAreaView>
-      {selectedId ? (
-        <View>
-          <Button
-            title="Edit default values"
-            onPress={() =>
-              navigation.navigate('EntryDefaults', {
-                choreId: selectedId,
-              })
-            }
+      <StatusBar translucent={true} style="dark" />
+      <Header label="Log a new chore" />
+      <View style={styles.mainWrapper}>
+        <SafeAreaView style={styles.flatListWrapper}>
+          <FlatList
+            data={chores}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.choreId}
+            extraData={selectedId}
+            ItemSeparatorComponent={() => (
+              <View style={styles.flatListSeperator} />
+            )}
           />
+        </SafeAreaView>
+        {selectedId ? (
+          <View style={styles.buttonContainer}>
+            <Pressable
+              style={styles.button}
+              onPress={() =>
+                navigation.navigate('EntryDefaults', {
+                  choreId: selectedId,
+                })
+              }
+            >
+              <Text style={styles.text}>Edit default values</Text>
+            </Pressable>
+          </View>
+        ) : null}
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.button}>
+            <Text style={styles.text}>Submit</Text>
+          </Pressable>
         </View>
-      ) : null}
-      <View>
-        <Button title="Submit" />
       </View>
     </>
   );
 }
 
-const styles = StyleSheet.create({
+/* const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#a4a0a0',
@@ -96,3 +114,4 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
 });
+ */

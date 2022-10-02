@@ -3,7 +3,7 @@ import { Caveat_500Medium } from '@expo-google-fonts/caveat';
 import Constants from 'expo-constants';
 import React, { useCallback } from 'react';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { colors } from '../styles/constants';
+import { colors, styles } from '../styles/constants';
 import * as SplashScreen from 'expo-splash-screen';
 
 SplashScreen.preventAutoHideAsync();
@@ -27,14 +27,14 @@ export default function Header(props) {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <Text style={styles.label}>{props.label}</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>{props.label}</Text>
       </View>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+/* const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: colors.cardBackground,
   },
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Caveat_500Medium',
   },
-});
+}); */

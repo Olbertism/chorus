@@ -1,25 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
+import { styles } from '../../styles/constants';
+import Header from '../Header';
 
 export default function Statistics() {
   return (
     <>
-      <View style={styles.container}>
-        <Text>Stats and team overview</Text>
-        <StatusBar style="auto" />
-      </View>
-      <View>
-        <Button title="Submit" />
+      <StatusBar translucent={true} style="dark" />
+      <Header label="Team overview" />
+      <View style={styles.mainWrapper}>
+        <View>
+          <Text>Stats and team overview</Text>
+        </View>
       </View>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#8ee1ca',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

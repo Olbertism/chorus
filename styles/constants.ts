@@ -1,6 +1,80 @@
+import { StyleSheet } from 'react-native';
+import Constants from 'expo-constants';
+import { Poppins_400Regular, useFonts } from '@expo-google-fonts/poppins';
+import { Caveat_500Medium } from '@expo-google-fonts/caveat';
+
 export const colors = {
   background: '#f0e5cf',
   cardBackground: '#f0d9ff',
   cardShadow: '#bfa2db',
   text: '#3f3e41',
+  primary: '#ad2e2e',
+  secondary: '#FBF4F4',
+  accent: '#CD9E42',
 };
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fe6b6b',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  safeArea: {
+    backgroundColor: colors.secondary,
+  },
+  header: {
+    backgroundColor: colors.secondary,
+    paddingTop: Constants.statusBarHeight + 10,
+    paddingBottom: 20,
+  },
+  headerText: {
+    color: colors.text,
+    fontSize: 32,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontFamily: 'Caveat_500Medium',
+  },
+  mainWrapper: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.secondary,
+  },
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.accent,
+    color: colors.secondary,
+    padding: '10px',
+    borderRadius: 10,
+  },
+  buttonContainer: {
+    justifyContent: 'center',
+    width: '65%',
+    margin: '10px',
+  },
+  text: {
+    color: colors.secondary,
+    fontSize: 18,
+  },
+  flatListWrapper: {
+    width: '80%',
+  },
+  flatListItem: {
+    padding: '15px',
+    borderRadius: 10,
+    borderStyle: 'solid',
+    borderColor: colors.primary,
+    borderWidth: 2,
+  },
+  flatListText: {
+    fontSize: 18,
+  },
+  flatListSeperator: {
+    height: 8,
+    width: '100%',
+    backgroundColor: colors.secondary,
+  },
+});

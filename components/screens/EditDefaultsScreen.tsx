@@ -1,10 +1,14 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
+import { styles } from '../../styles/constants';
 import { chores } from '../../util/database/chores';
+import { RootStackParamList } from '../../util/types';
 import Header from '../Header';
 
+type Props = NativeStackScreenProps<RootStackParamList, 'EntryDefaults'>;
 
-export default function EntryDefaults({ navigation, route }) {
+export default function EntryDefaults({ navigation, route }: Props) {
   const { choreId } = route.params;
   const selectedChore = chores.find((chore) => {
     return chore.choreId === choreId;
@@ -12,25 +16,23 @@ export default function EntryDefaults({ navigation, route }) {
 
   return (
     <>
-      <View>
-        <Text>{selectedChore?.choreName}</Text>
-      </View>
-      <View style={styles.container}>
-        <Text>Change the default entry values</Text>
-        <StatusBar style="auto" />
-      </View>
-      <View>
-        <Button title="Submit" />
+      <StatusBar translucent={true} style="dark" />
+      <Header label={selectedChore?.choreName} />
+      <View style={styles.mainWrapper}>
+        <View>
+          <Text>Here you can change the default log values.</Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.button}>
+            <Text style={styles.text}>Submit</Text>
+          </Pressable>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.button}>
+            <Text style={styles.text}>Abort</Text>
+          </Pressable>
+        </View>
       </View>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#e18ed9',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
