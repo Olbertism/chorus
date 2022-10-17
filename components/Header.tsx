@@ -34,19 +34,3 @@ export default function Header(props) {
   );
 }
 
-/* const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: colors.cardBackground,
-  },
-  container: {
-    paddingTop: Constants.statusBarHeight + 10,
-    paddingBottom: 20,
-  },
-  label: {
-    color: colors.text,
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontFamily: 'Caveat_500Medium',
-  },
-}); */

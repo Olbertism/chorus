@@ -1,8 +1,14 @@
+import { getDatabase, ref, set } from 'firebase/database';
+
 export type Chore = {
   choreId: string;
   choreName: string;
   choreWeight: number;
 };
+
+/* export type Chores = {
+  [key: string]: Chore
+} */
 
 export const chores = [
   {
@@ -46,3 +52,20 @@ export const chores = [
     choreWeight: 2,
   },
 ];
+
+export function initFirebaseChores() {
+  const db = getDatabase();
+  for (const chore of chores) {
+    set(ref(db, 'chores/' + chore.choreId), {
+      choreName: chore.choreName,
+      choreWeight: chore.choreWeight,
+    })
+      .then(() => {
+        return true;
+      })
+      .catch((error) => {
+        console.log(error);
+        return false;
+      });
+  }
+}

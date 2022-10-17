@@ -14,6 +14,8 @@ import { RootStackParamList } from '../../util/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
+
+
 export default function Home({ navigation }: Props) {
   return (
     <>
@@ -35,6 +37,14 @@ export default function Home({ navigation }: Props) {
             onPress={() => navigation.navigate('Statistics')}
           >
             <Text style={styles.text}>Go to statistics</Text>
+          </Pressable>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Pressable
+            style={styles.button}
+            onPress={() => navigation.navigate('Settings')}
+          >
+            <Text style={styles.text}>Settings</Text>
           </Pressable>
         </View>
       </View>

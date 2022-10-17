@@ -4,4 +4,5 @@ export type RootStackParamList = {
   EntryDefaults: { choreId: string };
   Setup: undefined;
   Statistics: undefined;
+  Settings: undefined;
 };
