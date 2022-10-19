@@ -28,7 +28,10 @@ export default function EntryDefaults({ navigation, route }: Props) {
           </Pressable>
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable style={styles.button}>
+          <Pressable
+            style={styles.button}
+            onPress={() => navigation.navigate('NewEntry')}
+          >
             <Text style={styles.text}>Abort</Text>
           </Pressable>
         </View>

@@ -1,4 +1,5 @@
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, onValue, ref, set } from 'firebase/database';
+import { database } from '../firebase/firebase';
 
 export type Chore = {
   choreId: string;
@@ -69,3 +70,22 @@ export function initFirebaseChores() {
       });
   }
 }
+
+/* export function checkForChoreLog() {
+
+  const choreLogRef = ref(database, "choreLog")
+  onValue(choreLogRef, (snapshot) => {
+    if (snapshot.exists()) {
+      return true
+    }
+    else {
+      return false
+    }
+  })
+}
+
+export function setupChoreLog() {
+  if (!checkForChoreLog()) {
+
+  }
+} */

@@ -1,13 +1,12 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
-  child,
-  Database,
-  DataSnapshot,
-  get,
-  getDatabase,
   onValue,
   ref,
   set,
+  push,
+  getDatabase,
+  child,
+  update,
 } from 'firebase/database';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
@@ -28,6 +27,7 @@ import { Chore } from '../../util/database/chores';
 import { RootStackParamList } from '../../util/types';
 import Header from '../Header';
 import { database } from '../../util/firebase/firebase';
+import { getAuth, User } from 'firebase/auth';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'NewEntry'>;
 
@@ -50,79 +50,64 @@ const ChoreItem = ({
   </TouchableOpacity>
 );
 
-/* function testDBGetter() {
-  const db = getDatabase();
-  const reference = ref(db, 'users/' + 'choreId');
-  onValue(reference, (snapshot) => {
-    const highscore = snapshot.val().dummy;
-    console.log('New high score: ' + highscore);
+function submitEntry(choreId: string, chores: Chore[], uid: string) {
+  const selectedChore = chores.find((chore) => {
+    if (chore.choreId === choreId) {
+      return true;
+    }
+    return false;
   });
-} */
 
-function getChoreWeight(database: Database, choreId: string) {
-  const reference = ref(database, 'chores/' + choreId);
-  get(child(reference, 'chores/' + choreId))
-    .then((snapshot) => {
-      if (snapshot.exists() && snapshot.val().choreWeight) {
-        return snapshot.val().choreWeight as string;
-      } else {
-        console.log('No data available');
-        return null;
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
+  if (!selectedChore) {
+    console.log('An error occured when selecting a chore');
+    return;
+  }
 
-// onValue return is always an Unsubscribe function...
-/* function getChoreWeight(database: Database, choreId: string) {
-  const reference = ref(database, 'chores/' + choreId);
-  return onValue(ref(database, 'chores/' + choreId), (snapshot) => {
-    const choreWeight = (snapshot.val() && snapshot.val().choreWeight) || null;
-    return choreWeight
-  }, {
-    onlyOnce: true
-  });
-} */
-
-function submitEntry(choreId: string) {
-  const db = getDatabase();
-  const choreWeight = getChoreWeight(db, choreId);
-  set(ref(db, 'choreLogs/' + crypto.randomUUID()), {
+  const newLogData = {
     choreId: choreId,
-    userId: 'dummy',
+    userId: uid,
     timestamp: Date.now(),
-    choreDate: 'dummy',
-    choreWeight: choreWeight,
-  });
+    choreDate: Date.now(), // default date is now
+    choreName: selectedChore.choreName,
+    choreWeight: selectedChore.choreWeight,
+  };
+
+  const newLogKey = push(child(ref(database), 'choreLogs')).key;
+
+  if (!newLogKey) {
+    return;
+  }
+
+  const newLogEntryWrapper = {};
+  newLogEntryWrapper['/choreLogs/' + newLogKey] = newLogData;
+
+  return update(ref(database), newLogEntryWrapper);
 }
 
 export default function NewEntry({ navigation }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [chores, setChores] = useState<Chore>([]);
-
-  // console.log(chores);
-  // console.log(Object.keys(chores));
+  const [chores, setChores] = useState<Chore[]>([]);
+  const [uid, setUid] = useState<string>('');
 
   useEffect(() => {
     // use return of onValue to cleanup (unsubscribe func)
     return onValue(ref(database, '/chores'), (snapshot) => {
-      let response = snapshot.val() || {};
-      let rawData = { ...response };
-
-      console.log(rawData);
-
+      // let response = snapshot.val() || {};
       // reshaping data into an array...
-      const chores = [];
+      const chores = [] as Chore[];
       snapshot.forEach((child) => {
         chores.push({ choreId: child.key, ...child.val() });
       });
-
-      console.log(chores);
-
       setChores(chores);
     });
+  }, []);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const uid = auth.currentUser?.uid;
+    if (uid) {
+      setUid(uid);
+    }
   }, []);
 
   const renderItem = ({ item }: { item: Chore }) => {
@@ -134,7 +119,7 @@ export default function NewEntry({ navigation }: Props) {
     return (
       <ChoreItem
         item={item}
-        onPress={() => setSelectedId(item)}
+        onPress={() => setSelectedId(item.choreId)}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
       />
@@ -174,7 +159,7 @@ export default function NewEntry({ navigation }: Props) {
             <View style={styles.buttonContainer}>
               <Pressable
                 style={styles.button}
-                onPress={() => submitEntry(selectedId)}
+                onPress={() => submitEntry(selectedId, chores, uid)}
               >
                 <Text style={styles.text}>Submit</Text>
               </Pressable>

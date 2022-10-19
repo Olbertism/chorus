@@ -19,19 +19,10 @@ export default function Settings() {
             style={styles.button}
             onPress={() => resetDefaultEntries()}
           >
-            <Text style={styles.text}>Submit</Text>
+            <Text style={styles.text}>Reset default chores</Text>
           </Pressable>
         </View>
       </View>
     </>
   );
 }
-
-/* const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#b1eced',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-}); */
