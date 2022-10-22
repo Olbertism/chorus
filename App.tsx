@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from './components/screens/HomeScreen';
+import Dashboard from './components/screens/HomeScreen';
 import NewEntry from './components/screens/NewEntryScreen';
 import Setup from './components/screens/SetupScreen';
 import Statistics from './components/screens/StatsScreen';
@@ -14,60 +14,81 @@ import SignUp from './components/screens/SignUp';
 import SignIn from './components/screens/SignIn';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import Start from './components/screens/StartScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import CreateNewTeam from './components/screens/CreateNewTeamScreen';
 
-const Root = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 let myApp = initializeApp(firebaseConfig);
 
-function RootStack({ uid }: { uid: string }) {
-  console.log('rootstack uid', uid);
+function Home({ route }) {
   return (
-    <Root.Navigator>
-      {uid ? (
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Dashboard"
+        component={Dashboard}
+        initialParams={{ uid: route.params.uid, userMail: route.params.userMail }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={Settings}
+        initialParams={{ uid: route.params.uid, userMail: route.params.userMail }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+function RootStack({ user }: { user: User | null }) {
+  console.log('rootstack user', user);
+  const uid = user?.uid;
+  const userMail = user?.email;
+
+  return (
+    <Stack.Navigator>
+      {user ? (
         <>
-          <Root.Screen name="Home" component={Home} />
-          <Root.Screen name="NewEntry" component={NewEntry} />
-          <Root.Screen name="EntryDefaults" component={EntryDefaults} />
-          <Root.Screen name="Setup" component={Setup} />
-          <Root.Screen name="Statistics" component={Statistics} />
-          <Root.Screen name="Settings" component={Settings} />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ headerShown: false }}
+            initialParams={{ uid: uid, userMail: userMail }}
+          />
+          <Stack.Screen name="NewEntry" component={NewEntry} />
+          <Stack.Screen name="EntryDefaults" component={EntryDefaults} />
+          <Stack.Screen name="Setup" component={Setup} />
+          <Stack.Screen name="Statistics" component={Statistics} />
+          <Stack.Screen name="CreateNewTeam" component={CreateNewTeam} />
         </>
       ) : (
         <>
-          <Root.Screen name="Start" component={Start} />
-          <Root.Screen name="SignUp" component={SignUp} />
-          <Root.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="Start" component={Start} />
+          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="SignIn" component={SignIn} />
         </>
       )}
-    </Root.Navigator>
+    </Stack.Navigator>
   );
 }
 
 export default function App() {
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
-  const [uid, setUid] = useState('');
-
-  console.log('app uid', uid);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  // const [uid, setUid] = useState('');
 
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser(user);
-        setUid(user.uid);
+        setCurrentUser(user);
       } else {
-        setUser(null);
-        setUid('');
+        setCurrentUser(null);
       }
     });
   }, []);
 
   return (
-    <>
-      <NavigationContainer>
-        <RootStack uid={uid} />
-      </NavigationContainer>
-    </>
+    <NavigationContainer>
+      <RootStack user={currentUser} />
+    </NavigationContainer>
   );
 }

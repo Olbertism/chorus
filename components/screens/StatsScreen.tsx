@@ -6,61 +6,69 @@ import { useEffect, useState } from 'react';
 import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { styles } from '../../styles/constants';
 import { database } from '../../util/firebase/firebase';
-import { RootStackParamList } from '../../util/types';
+import { convertDate } from '../../util/helpers';
+import { RootStackParamList, UserEntries } from '../../util/types';
 import Header from '../Header';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Statistics'>;
 
 export default function Statistics({ route }: Props) {
-  // const [user, setUser] = useState<User | null>(null);
-  const [userEntries, setUserEntries] = useState([]);
+  const [choreEntries, setChoreEntries] = useState<UserEntries>([]);
+  const [teamName, setTeamName] = useState('');
 
-  const { uid } = route.params;
+  const uid = route.params.uid;
+  const userMail = route.params.userMail;
 
-  console.log(uid);
-  console.log(userEntries);
-
-  /*   useEffect(() => {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    if (user) {
-      setUser(user);
-    }
-  }, []); */
+  useEffect(() => {
+    // use return of onValue to cleanup (unsubscribe func)
+    return onValue(ref(database, '/teams'), (snapshot) => {
+      snapshot.forEach((team) => {
+        const currentTeamMembers = team.val().members;
+        for (const value of Object.values(currentTeamMembers)) {
+          if (value.mailAddress === userMail) {
+            setTeamName(team.val().teamName);
+          }
+        }
+      });
+    });
+  }, [userMail]);
 
   useEffect(() => {
     // use return of onValue to cleanup (unsubscribe func)
     return onValue(ref(database, '/choreLogs'), (snapshot) => {
-      const userEntries = [];
+      const entries = [] as UserEntries;
       snapshot.forEach((child) => {
         console.log(child.val());
         if (child.val().userId && child.val().userId === uid) {
-          userEntries.push({ ...child.val() });
+          entries.push({ ...child.val() });
         }
       });
-      console.log(userEntries);
-      setUserEntries(userEntries);
+      setChoreEntries(entries);
     });
-  }, []);
+  }, [uid]);
 
   return (
     <>
-      <StatusBar translucent={true} style="dark" />
+      <StatusBar translucent={true} />
       <Header label="Team overview" />
       <View style={styles.mainWrapper}>
         <View>
           <Text>Stats and team overview</Text>
         </View>
         <ScrollView>
-          {userEntries.map((entry) => {
+          {choreEntries.map((entry) => {
             return (
-              <View>
-                <Text>{entry.choreId}</Text>
+              <View key={crypto.randomUUID()}>
+                <Text>{entry.choreName}</Text>
+                <Text>{convertDate(entry.choreDate)}</Text>
                 <Text>{entry.choreWeight}</Text>
               </View>
             );
           })}
         </ScrollView>
+        <View>
+          <Text style={styles.headline}>Latest team entries for {teamName}</Text>
+        </View>
       </View>
     </>
   );

@@ -23,6 +23,28 @@ export const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: colors.secondary,
   },
+  form: {
+    width: '80%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: -40,
+  },
+  formTextInput: {
+    width: '100%',
+    height: 45,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: colors.primary,
+    marginBottom: 35,
+    padding: 10,
+    fontSize: 16,
+    color: colors.accent,
+  },
+  inviteBox: {
+    flexDirection: 'row',
+    
+  },
   header: {
     backgroundColor: colors.secondary,
     paddingTop: Constants.statusBarHeight + 10,
@@ -40,6 +62,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.secondary,
+  },
+  headline: {
+    color: colors.primary,
+    fontSize: 18,
   },
   button: {
     flex: 1,

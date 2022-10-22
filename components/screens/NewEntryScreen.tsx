@@ -50,12 +50,15 @@ const ChoreItem = ({
   </TouchableOpacity>
 );
 
-function submitEntry(choreId: string, chores: Chore[], uid: string) {
+function submitEntry(
+  choreId: string,
+  chores: Chore[],
+  uid: string,
+  team: string,
+) {
+  console.log(team);
   const selectedChore = chores.find((chore) => {
-    if (chore.choreId === choreId) {
-      return true;
-    }
-    return false;
+    return chore.choreId === choreId;
   });
 
   if (!selectedChore) {
@@ -66,6 +69,7 @@ function submitEntry(choreId: string, chores: Chore[], uid: string) {
   const newLogData = {
     choreId: choreId,
     userId: uid,
+    team: team,
     timestamp: Date.now(),
     choreDate: Date.now(), // default date is now
     choreName: selectedChore.choreName,
@@ -84,31 +88,41 @@ function submitEntry(choreId: string, chores: Chore[], uid: string) {
   return update(ref(database), newLogEntryWrapper);
 }
 
-export default function NewEntry({ navigation }: Props) {
+export default function NewEntry({ navigation, route }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [chores, setChores] = useState<Chore[]>([]);
-  const [uid, setUid] = useState<string>('');
+  const [team, setTeam] = useState('');
+
+  const uid = route.params.uid
+  const userMail = route.params.userMail
+
 
   useEffect(() => {
     // use return of onValue to cleanup (unsubscribe func)
     return onValue(ref(database, '/chores'), (snapshot) => {
-      // let response = snapshot.val() || {};
+
       // reshaping data into an array...
       const chores = [] as Chore[];
-      snapshot.forEach((child) => {
-        chores.push({ choreId: child.key, ...child.val() });
+      snapshot.forEach((chore) => {
+        chores.push({ choreId: chore.key, ...chore.val() });
       });
       setChores(chores);
     });
   }, []);
 
   useEffect(() => {
-    const auth = getAuth();
-    const uid = auth.currentUser?.uid;
-    if (uid) {
-      setUid(uid);
-    }
-  }, []);
+    // use return of onValue to cleanup (unsubscribe func)
+    return onValue(ref(database, '/teams'), (snapshot) => {
+      snapshot.forEach((team) => {
+        const currentTeamMembers = team.val().members;
+        for (const value of Object.values(currentTeamMembers)) {
+          if (value.mailAddress === userMail) {
+            setTeam(team.val().teamName);
+          }
+        }
+      });
+    });
+  }, [userMail]);
 
   const renderItem = ({ item }: { item: Chore }) => {
     const backgroundColor =
@@ -159,7 +173,7 @@ export default function NewEntry({ navigation }: Props) {
             <View style={styles.buttonContainer}>
               <Pressable
                 style={styles.button}
-                onPress={() => submitEntry(selectedId, chores, uid)}
+                onPress={() => submitEntry(selectedId, chores, uid, team)}
               >
                 <Text style={styles.text}>Submit</Text>
               </Pressable>

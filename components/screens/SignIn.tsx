@@ -62,27 +62,31 @@ export default function SignIn() {
       <StatusBar translucent={true} style="dark" />
       <Header label="Sign In" />
       <View style={styles.mainWrapper}>
-        <View>
-          <TextInput
-            defaultValue={email}
-            onChangeText={handleEmailChange}
-            placeholder="Email Address"
-          />
-        </View>
-        <View>
-          <TextInput
-            defaultValue={password}
-            onChangeText={handlePasswordChange}
-            placeholder="Enter Password"
-            secureTextEntry={secureTextEntry()}
-          />
-          <Ionicons name={visibility.name} onPress={toggleVisibility} />
-        </View>
+        <View style={styles.form}>
+          <View>
+            <TextInput
+              defaultValue={email}
+              onChangeText={handleEmailChange}
+              placeholder="Email Address"
+              style={styles.formTextInput}
+            />
+          </View>
+          <View>
+            <TextInput
+              defaultValue={password}
+              onChangeText={handlePasswordChange}
+              placeholder="Enter Password"
+              secureTextEntry={secureTextEntry()}
+              style={styles.formTextInput}
+            />
+            <Ionicons name={visibility.name} onPress={toggleVisibility} />
+          </View>
 
-        <View style={styles.buttonContainer}>
-          <Pressable style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.text}>Sign In</Text>
-          </Pressable>
+          <View style={styles.buttonContainer}>
+            <Pressable style={styles.button} onPress={handleSubmit}>
+              <Text style={styles.text}>Sign In</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </>
