@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { styles } from '../../styles/constants';
 import { chores } from '../../util/database/chores';
 import { RootStackParamList } from '../../util/types';
@@ -16,7 +16,7 @@ export default function EntryDefaults({ navigation, route }: Props) {
 
   return (
     <>
-      <StatusBar translucent={true} style="dark" />
+      <StatusBar translucent={true} />
       <Header label={selectedChore?.choreName} />
       <View style={styles.mainWrapper}>
         <View>
@@ -28,10 +28,7 @@ export default function EntryDefaults({ navigation, route }: Props) {
           </Pressable>
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable
-            style={styles.button}
-            onPress={() => navigation.navigate('NewEntry')}
-          >
+          <Pressable style={styles.button} onPress={() => navigation.goBack()}>
             <Text style={styles.text}>Abort</Text>
           </Pressable>
         </View>

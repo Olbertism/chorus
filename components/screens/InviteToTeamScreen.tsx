@@ -1,60 +1,58 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import {
-  Pressable,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { useEffect, useState } from 'react';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import { colors, styles } from '../../styles/constants';
 import Header from '../Header';
 import { AntDesign } from '@expo/vector-icons';
-import { child, push, ref, update } from 'firebase/database';
+import { onValue, push, ref, update } from 'firebase/database';
 import { database } from '../../util/firebase/firebase';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList, TeamCreatorWrapper } from '../../util/types';
+import { RootStackParamList, TeamMemberDataSnapshot } from '../../util/types';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'CreateNewTeam'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'InviteToTeam'>;
 
-async function createNewTeam(
-  name: string,
-  inviteArray: string[],
-  currentUserMail: string,
-) {
-  const members = [...inviteArray, currentUserMail];
-  const newTeamKey = push(child(ref(database), 'teams')).key;
+async function inviteToTeam(teamId: string, inviteArray: string[]) {
+  const members = [...inviteArray];
 
-  if (!newTeamKey) {
-    return;
-  }
-
-  const newTeamWrapper = {} as TeamCreatorWrapper;
-  newTeamWrapper['/teams/' + newTeamKey] = { teamName: name };
-  await update(ref(database), newTeamWrapper);
-  const teamRef = ref(database, '/teams/' + newTeamKey);
-  await update(teamRef, { members: {} });
+  const reference = ref(database, `/teams/${teamId}/members`);
 
   for (const member of members) {
-    const newMemberKey = push(
-      ref(database, '/teams/' + newTeamKey + '/members'),
-    );
+    const newMemberKey = push(reference);
     await update(newMemberKey, { mailAddress: member });
   }
 }
 
-export default function CreateNewTeam({ route }: Props) {
+export default function InviteToTeam({ route }: Props) {
   const [invitationList, setInvitationList] = useState<string[]>([]);
   const [currentInvite, setCurrentInvite] = useState('');
+  const [teamId, setTeamId] = useState<string | null>('');
   const [teamName, setTeamName] = useState('');
+  const [teamMembers, setTeamMembers] = useState<string[]>([]);
 
-  const currentUserMail = route.params.userMail;
+  const userMail = route.params.userMail;
+
+  useEffect(() => {
+    return onValue(ref(database, '/teams'), (snapshot) => {
+      snapshot.forEach((team) => {
+        const currentTeamMembers = team.val().members as TeamMemberDataSnapshot;
+        const currentTeamId = team.key;
+        const membersMailAddresses = [];
+
+        for (const value of Object.values(currentTeamMembers)) {
+          membersMailAddresses.push(value.mailAddress);
+
+          if (value.mailAddress === userMail) {
+            setTeamId(currentTeamId);
+            setTeamName(team.val().teamName);
+          }
+        }
+        setTeamMembers(membersMailAddresses);
+      });
+    });
+  }, [userMail]);
 
   const handleInviteChange = (text: string) => {
     setCurrentInvite(text);
-  };
-
-  const handleTeamNameChange = (text: string) => {
-    setTeamName(text);
   };
 
   const handleAddToInvitation = (mailAddress: string) => {
@@ -64,23 +62,16 @@ export default function CreateNewTeam({ route }: Props) {
     }
   };
 
-  if (!currentUserMail) {
+  if (!userMail || !teamId) {
     return <Text>An error occured</Text>;
   }
 
   return (
     <>
       <StatusBar translucent={true} />
-      <Header label="Create a new team" />
+      <Header label="Invite new people to your team" />
       <View style={styles.mainWrapper}>
-        <View style={styles.form}>
-          <TextInput
-            placeholder="Enter Team Name"
-            style={styles.formTextInput}
-            onChangeText={handleTeamNameChange}
-          />
-        </View>
-        <Text style={styles.headline}>Invite members</Text>
+        <Text style={styles.headline}>Invite to team "{teamName}"</Text>
         <View style={styles.inviteBox}>
           <TextInput
             placeholder="Enter Mail Address"
@@ -97,10 +88,19 @@ export default function CreateNewTeam({ route }: Props) {
             }}
           />
         </View>
+        <Text style={styles.headline}>Current team members:</Text>
+        <View>
+          {teamMembers.map((entry) => {
+            return (
+              <View key={entry}>
+                <Text>{entry}</Text>
+              </View>
+            );
+          })}
+        </View>
 
         <Text style={styles.headline}>Currently invited:</Text>
         <View>
-          <Text>You :-&#41;</Text>
           {invitationList.map((entry) => {
             return (
               <View key={entry}>
@@ -118,14 +118,12 @@ export default function CreateNewTeam({ route }: Props) {
           <Pressable
             style={styles.button}
             onPress={() => {
-              createNewTeam(teamName, invitationList, currentUserMail).catch(
-                (error) => {
-                  console.log(error);
-                },
-              );
+              inviteToTeam(teamId, invitationList).catch((error) => {
+                console.log(error);
+              });
             }}
           >
-            <Text style={styles.text}>Create Team</Text>
+            <Text style={styles.text}>Submit invitation</Text>
           </Pressable>
         </View>
       </View>

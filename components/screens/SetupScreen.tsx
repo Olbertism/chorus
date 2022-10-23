@@ -6,7 +6,7 @@ export default function Setup() {
     <>
       <View style={styles.container}>
         <Text>First time set up</Text>
-        <StatusBar style="auto" />
+        <StatusBar />
       </View>
       <View>
         <Button title="Submit" />

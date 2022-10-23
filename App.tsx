@@ -1,5 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 import Dashboard from './components/screens/HomeScreen';
 import NewEntry from './components/screens/NewEntryScreen';
 import Setup from './components/screens/SetupScreen';
@@ -16,33 +19,44 @@ import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import Start from './components/screens/StartScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CreateNewTeam from './components/screens/CreateNewTeamScreen';
+import InviteToTeam from './components/screens/InviteToTeamScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 let myApp = initializeApp(firebaseConfig);
 
-function Home({ route }) {
+type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+function Home({ route }: HomeProps) {
   return (
     <Tab.Navigator>
       <Tab.Screen
         name="Dashboard"
         component={Dashboard}
-        initialParams={{ uid: route.params.uid, userMail: route.params.userMail }}
+        initialParams={{
+          uid: route.params.uid,
+          userMail: route.params.userMail,
+          userName: route.params.userName,
+        }}
       />
       <Tab.Screen
         name="Settings"
         component={Settings}
-        initialParams={{ uid: route.params.uid, userMail: route.params.userMail }}
+        initialParams={{
+          uid: route.params.uid,
+          userMail: route.params.userMail,
+          userName: route.params.userName,
+        }}
       />
     </Tab.Navigator>
   );
 }
 
 function RootStack({ user }: { user: User | null }) {
-  console.log('rootstack user', user);
   const uid = user?.uid;
   const userMail = user?.email;
+  const userName = user?.displayName;
 
   return (
     <Stack.Navigator>
@@ -52,13 +66,18 @@ function RootStack({ user }: { user: User | null }) {
             name="Home"
             component={Home}
             options={{ headerShown: false }}
-            initialParams={{ uid: uid, userMail: userMail }}
+            initialParams={{
+              uid: uid,
+              userMail: userMail,
+              userName: userName,
+            }}
           />
           <Stack.Screen name="NewEntry" component={NewEntry} />
           <Stack.Screen name="EntryDefaults" component={EntryDefaults} />
           <Stack.Screen name="Setup" component={Setup} />
           <Stack.Screen name="Statistics" component={Statistics} />
           <Stack.Screen name="CreateNewTeam" component={CreateNewTeam} />
+          <Stack.Screen name="InviteToTeam" component={InviteToTeam} />
         </>
       ) : (
         <>
@@ -73,7 +92,6 @@ function RootStack({ user }: { user: User | null }) {
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  // const [uid, setUid] = useState('');
 
   useEffect(() => {
     const auth = getAuth();

@@ -1,7 +1,5 @@
 import { StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
-import { Poppins_400Regular, useFonts } from '@expo-google-fonts/poppins';
-import { Caveat_500Medium } from '@expo-google-fonts/caveat';
 
 export const colors = {
   background: '#f0e5cf',
@@ -43,7 +41,7 @@ export const styles = StyleSheet.create({
   },
   inviteBox: {
     flexDirection: 'row',
-    
+
   },
   header: {
     backgroundColor: colors.secondary,

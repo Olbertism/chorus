@@ -1,16 +1,6 @@
-import {
-  setStatusBarNetworkActivityIndicatorVisible,
-  StatusBar,
-} from 'expo-status-bar';
+import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import {
-  Button,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import { styles } from '../../styles/constants';
 import Header from '../Header';
 import { Ionicons } from '@expo/vector-icons';
@@ -59,7 +49,7 @@ export default function SignIn() {
 
   return (
     <>
-      <StatusBar translucent={true} style="dark" />
+      <StatusBar translucent={true} />
       <Header label="Sign In" />
       <View style={styles.mainWrapper}>
         <View style={styles.form}>

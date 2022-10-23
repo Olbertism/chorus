@@ -1,16 +1,6 @@
-import {
-  setStatusBarNetworkActivityIndicatorVisible,
-  StatusBar,
-} from 'expo-status-bar';
+import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import {
-  Button,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import { styles } from '../../styles/constants';
 import Header from '../Header';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,7 +11,9 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [visibility, setVisibility] = useState({ name: 'eye-off' });
+  const [visibility, setVisibility] = useState<{ name: string }>({
+    name: 'eye-off',
+  });
 
   function toggleVisibility() {
     if (visibility.name === 'eye') {
@@ -69,7 +61,7 @@ export default function SignUp() {
 
   return (
     <>
-      <StatusBar translucent={true} style="dark" />
+      <StatusBar translucent={true} />
       <Header label="Sign Up" />
       <View style={styles.mainWrapper}>
         <View style={styles.form}>

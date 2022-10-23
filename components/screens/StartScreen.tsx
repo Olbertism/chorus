@@ -1,24 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import {
-  Button,
-  Pressable,
-  SliderBase,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { styles } from '../../styles/constants';
 import Header from '../Header';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { AuthStackParamList, RootStackParamList } from '../../util/types';
-import { getAuth } from 'firebase/auth';
+import { RootStackParamList } from '../../util/types';
 
-type Props = NativeStackScreenProps<AuthStackParamList, 'Start'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'Start'>;
 
 export default function Start({ navigation }: Props) {
   return (
     <>
-      <StatusBar translucent={true} style="dark" />
+      <StatusBar translucent={true} />
       <Header label="You're at home, baby." />
       <View style={styles.mainWrapper}>
         <View style={styles.buttonContainer}>

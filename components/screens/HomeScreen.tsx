@@ -1,31 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import {
-  Button,
-  Pressable,
-  SliderBase,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { styles } from '../../styles/constants';
 import Header from '../Header';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../util/types';
-import { getAuth, User } from 'firebase/auth';
-import { useEffect, useId, useState } from 'react';
+import { TabParamList } from '../../util/types';
+import { getAuth } from 'firebase/auth';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+type Props = NativeStackScreenProps<TabParamList, 'Dashboard'>;
 
 export default function Dashboard({ navigation, route }: Props) {
-  // const [user, setUser] = useState<User | null>(null);
-
-  console.log(route.params)
-  const uid = route.params.uid
-  const userMail = route.params.userMail
-
-  /* useEffect(() => {
-    setUser(getAuth().currentUser);
-  }, []); */
+  const uid = route.params.uid;
+  const userMail = route.params.userMail;
+  const userName = route.params.userName;
 
   const handleSignOut = () => {
     const auth = getAuth();
@@ -56,6 +42,7 @@ export default function Dashboard({ navigation, route }: Props) {
               navigation.navigate('NewEntry', {
                 uid: uid,
                 userMail: userMail,
+                userName: userName,
               })
             }
           >
@@ -69,6 +56,7 @@ export default function Dashboard({ navigation, route }: Props) {
               navigation.navigate('Statistics', {
                 uid: uid,
                 userMail: userMail,
+                userName: userName,
               })
             }
           >
