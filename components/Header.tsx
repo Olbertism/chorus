@@ -6,7 +6,7 @@ import { SafeAreaView, Text, View } from 'react-native';
 import { styles } from '../styles/constants';
 import * as SplashScreen from 'expo-splash-screen';
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 type Props = { label: string | undefined };
 
@@ -16,7 +16,7 @@ export default function Header(props: Props) {
     Caveat_500Medium,
   });
 
-  const onLayoutRootView = useCallback(async () => {
+/*   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
       // This tells the splash screen to hide immediately! If we call this after
       // `setAppIsReady`, then we may see a blank screen while the app is
@@ -25,7 +25,7 @@ export default function Header(props: Props) {
       // performed layout.
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded]); */
 
   return (
     <SafeAreaView style={styles.safeArea}>

@@ -99,7 +99,7 @@ function RootStack({ user }: { user: User | null }) {
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-    const [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Caveat_500Medium,
   });
@@ -115,7 +115,7 @@ export default function App() {
     });
   }, []);
 
-    if (!fontsLoaded) {
+  if (!fontsLoaded) {
     return null;
   }
 

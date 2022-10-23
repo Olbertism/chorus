@@ -54,7 +54,7 @@ export const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     textAlign: 'center',
-    // fontFamily: 'Caveat_500Medium',
+    fontFamily: 'Caveat_500Medium',
   },
   mainWrapper: {
     flex: 1,
