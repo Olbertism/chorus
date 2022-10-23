@@ -12,7 +12,7 @@ import Settings from './components/screens/SettingsScreen';
 import { RootStackParamList } from './util/types';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './util/firebase/firebase';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SignUp from './components/screens/SignUp';
 import SignIn from './components/screens/SignIn';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
@@ -20,6 +20,10 @@ import Start from './components/screens/StartScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CreateNewTeam from './components/screens/CreateNewTeamScreen';
 import InviteToTeam from './components/screens/InviteToTeamScreen';
+import * as SplashScreen from 'expo-splash-screen';
+import { useFonts } from 'expo-font';
+import { Poppins_400Regular } from '@expo-google-fonts/poppins';
+import { Caveat_500Medium } from '@expo-google-fonts/caveat';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -90,8 +94,15 @@ function RootStack({ user }: { user: User | null }) {
   );
 }
 
+// SplashScreen.preventAutoHideAsync();
+
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+    const [fontsLoaded] = useFonts({
+    Poppins_400Regular,
+    Caveat_500Medium,
+  });
 
   useEffect(() => {
     const auth = getAuth();
@@ -103,6 +114,10 @@ export default function App() {
       }
     });
   }, []);
+
+    if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <NavigationContainer>

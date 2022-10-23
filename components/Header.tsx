@@ -1,16 +1,17 @@
-import { Poppins_400Regular, useFonts } from '@expo-google-fonts/poppins';
+import { Poppins_400Regular } from '@expo-google-fonts/poppins';
 import { Caveat_500Medium } from '@expo-google-fonts/caveat';
 import React, { useCallback } from 'react';
+import { useFonts } from 'expo-font';
 import { SafeAreaView, Text, View } from 'react-native';
 import { styles } from '../styles/constants';
 import * as SplashScreen from 'expo-splash-screen';
 
 SplashScreen.preventAutoHideAsync();
 
-type Props = { label: string | undefined};
+type Props = { label: string | undefined };
 
 export default function Header(props: Props) {
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Caveat_500Medium,
   });

@@ -11,6 +11,8 @@ export const colors = {
   accent: '#CD9E42',
 };
 
+// NEVER USE px IN A STRING FOR NUMERIC VALUES, E.G. padding: '10px' -> THIS WILL CRASH ON ANDROID
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -41,7 +43,6 @@ export const styles = StyleSheet.create({
   },
   inviteBox: {
     flexDirection: 'row',
-
   },
   header: {
     backgroundColor: colors.secondary,
@@ -53,7 +54,7 @@ export const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     textAlign: 'center',
-    fontFamily: 'Caveat_500Medium',
+    // fontFamily: 'Caveat_500Medium',
   },
   mainWrapper: {
     flex: 1,
@@ -71,13 +72,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.accent,
     color: colors.secondary,
-    padding: '10px',
+    padding: 10,
     borderRadius: 10,
   },
   buttonContainer: {
     justifyContent: 'center',
     width: '65%',
-    margin: '10px',
+    margin: 10,
   },
   text: {
     color: colors.secondary,
@@ -87,7 +88,7 @@ export const styles = StyleSheet.create({
     width: '80%',
   },
   flatListItem: {
-    padding: '15px',
+    padding: 15,
     borderRadius: 10,
     borderStyle: 'solid',
     borderColor: colors.primary,
