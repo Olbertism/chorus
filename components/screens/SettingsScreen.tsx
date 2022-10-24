@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { getAuth } from 'firebase/auth';
 import { Pressable, Text, View } from 'react-native';
-import { styles } from '../../styles/constants';
+import { colors, styles } from '../../styles/constants';
 import { initFirebaseChores } from '../../util/database/chores';
 import { RootStackParamList } from '../../util/types';
 import Header from '../Header';
@@ -22,6 +22,7 @@ export default function Settings({ navigation }: Props) {
   return (
     <>
       <StatusBar translucent={true} />
+      <View style={{height: '15%', backgroundColor: colors.secondary }}/>
       <Header label="Settings" />
       <View style={styles.mainWrapper}>
         <View style={styles.buttonContainer}>

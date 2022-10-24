@@ -1,29 +1,29 @@
+import { Caveat_500Medium } from '@expo-google-fonts/caveat';
+import { Poppins_400Regular } from '@expo-google-fonts/poppins';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   createNativeStackNavigator,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
-import Dashboard from './components/screens/HomeScreen';
-import NewEntry from './components/screens/NewEntryScreen';
-import Setup from './components/screens/SetupScreen';
-import Statistics from './components/screens/StatsScreen';
-import EntryDefaults from './components/screens/EditDefaultsScreen';
-import Settings from './components/screens/SettingsScreen';
-import { RootStackParamList } from './util/types';
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from './util/firebase/firebase';
-import { useCallback, useEffect, useState } from 'react';
-import SignUp from './components/screens/SignUp';
-import SignIn from './components/screens/SignIn';
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
-import Start from './components/screens/StartScreen';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import CreateNewTeam from './components/screens/CreateNewTeamScreen';
-import InviteToTeam from './components/screens/InviteToTeamScreen';
-import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
-import { Poppins_400Regular } from '@expo-google-fonts/poppins';
-import { Caveat_500Medium } from '@expo-google-fonts/caveat';
+import * as SplashScreen from 'expo-splash-screen';
+import { initializeApp } from 'firebase/app';
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import { useCallback, useEffect, useState } from 'react';
+import CreateNewTeam from './components/screens/CreateNewTeamScreen';
+import EntryDefaults from './components/screens/EditDefaultsScreen';
+import Dashboard from './components/screens/HomeScreen';
+import InviteToTeam from './components/screens/InviteToTeamScreen';
+import NewEntry from './components/screens/NewEntryScreen';
+import Settings from './components/screens/SettingsScreen';
+import Setup from './components/screens/SetupScreen';
+import SignIn from './components/screens/SignIn';
+import SignUp from './components/screens/SignUp';
+import Start from './components/screens/StartScreen';
+import Statistics from './components/screens/StatsScreen';
+import { firebaseConfig } from './util/firebase/firebase';
+import { RootStackParamList } from './util/types';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -38,6 +38,7 @@ function Home({ route }: HomeProps) {
       <Tab.Screen
         name="Dashboard"
         component={Dashboard}
+        options={{ headerShown: false }}
         initialParams={{
           uid: route.params.uid,
           userMail: route.params.userMail,
@@ -47,6 +48,7 @@ function Home({ route }: HomeProps) {
       <Tab.Screen
         name="Settings"
         component={Settings}
+        options={{ headerShown: false }}
         initialParams={{
           uid: route.params.uid,
           userMail: route.params.userMail,

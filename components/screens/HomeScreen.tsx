@@ -1,8 +1,9 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import { getAuth } from 'firebase/auth';
 import { Pressable, Text, View } from 'react-native';
-import { styles } from '../../styles/constants';
+import { colors, styles } from '../../styles/constants';
 import { TabParamList } from '../../util/types';
 import Header from '../Header';
 
@@ -32,6 +33,7 @@ export default function Dashboard({ navigation, route }: Props) {
   return (
     <>
       <StatusBar translucent={true} />
+      <View style={{height: '15%', backgroundColor: colors.secondary }}/>
       <Header label="You're at home, baby." />
       <Text>{userMail}</Text>
       <View style={styles.mainWrapper}>
