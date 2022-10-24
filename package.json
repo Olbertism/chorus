@@ -17,6 +17,7 @@
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.0",
     "expo": "~46.0.9",
+    "expo-crypto": "~11.0.0",
     "expo-facebook": "^12.2.0",
     "expo-font": "~10.2.0",
     "expo-splash-screen": "~0.16.2",

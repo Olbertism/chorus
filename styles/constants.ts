@@ -1,5 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { Poppins_400Regular } from '@expo-google-fonts/poppins';
 import Constants from 'expo-constants';
+import { StyleSheet } from 'react-native';
 
 export const colors = {
   background: '#f0e5cf',
@@ -12,6 +13,8 @@ export const colors = {
 };
 
 // NEVER USE px IN A STRING FOR NUMERIC VALUES, E.G. padding: '10px' -> THIS WILL CRASH ON ANDROID
+
+// DONT USE FONTWEIGHT FOR ANDROID
 
 export const styles = StyleSheet.create({
   container: {
@@ -40,19 +43,20 @@ export const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     color: colors.accent,
+    fontFamily: 'Poppins_400Regular'
   },
   inviteBox: {
     flexDirection: 'row',
   },
   header: {
     backgroundColor: colors.secondary,
-    paddingTop: Constants.statusBarHeight + 10,
+    paddingTop: Constants.statusBarHeight / 2,
     paddingBottom: 20,
   },
   headerText: {
     color: colors.text,
     fontSize: 32,
-    fontWeight: 'bold',
+    // fontWeight: 'bold', -> Don't do this, font will not be rendered on Android
     textAlign: 'center',
     fontFamily: 'Caveat_500Medium',
   },
@@ -65,13 +69,12 @@ export const styles = StyleSheet.create({
   headline: {
     color: colors.primary,
     fontSize: 18,
+    fontFamily: 'Poppins_400Regular'
   },
   button: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.accent,
-    color: colors.secondary,
     padding: 10,
     borderRadius: 10,
   },
@@ -82,10 +85,11 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: colors.secondary,
-    fontSize: 18,
+    fontSize: 16,
+    fontFamily: 'Poppins_400Regular'
   },
   flatListWrapper: {
-    width: '80%',
+    width: '70%',
   },
   flatListItem: {
     padding: 15,
@@ -95,7 +99,8 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
   },
   flatListText: {
-    fontSize: 18,
+    fontSize: 16,
+    fontFamily: 'Poppins_400Regular'
   },
   flatListSeperator: {
     height: 8,

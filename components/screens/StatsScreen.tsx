@@ -69,15 +69,15 @@ export default function Statistics({ route }: Props) {
       <Header label="Team overview" />
       <View style={styles.mainWrapper}>
         <View>
-          <Text>Stats and team overview</Text>
+          <Text style={styles.headline}>Your latest entries</Text>
         </View>
         <ScrollView>
           {userChoreEntries.map((entry) => {
             return (
-              <View key={crypto.randomUUID()}>
+              <View key={`${entry.choreId}-${entry.choreDate}-${entry.userId}`}>
                 <Text>{entry.choreName}</Text>
                 <Text>{convertDate(entry.choreDate)}</Text>
-                <Text>{entry.choreWeight}</Text>
+                <Text>Weight: {entry.choreWeight}</Text>
               </View>
             );
           })}
@@ -86,16 +86,19 @@ export default function Statistics({ route }: Props) {
           <Text style={styles.headline}>
             Latest team entries for {teamName}
           </Text>
+        </View>
+        <ScrollView>
           {teamChoreEntries.map((entry) => {
             return (
-              <View key={crypto.randomUUID()}>
+              <View key={`${entry.choreId}-${entry.choreDate}-${entry.userId}`}>
                 <Text>{entry.choreName}</Text>
+                <Text>{entry.userName}</Text>
                 <Text>{convertDate(entry.choreDate)}</Text>
-                <Text>{entry.choreWeight}</Text>
+                <Text>Weight: {entry.choreWeight}</Text>
               </View>
             );
           })}
-        </View>
+        </ScrollView>
       </View>
     </>
   );

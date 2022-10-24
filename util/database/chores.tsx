@@ -47,6 +47,16 @@ export const chores = [
     choreName: 'Collecting dried laundry',
     choreWeight: 2,
   },
+  {
+    choreId: '9',
+    choreName: 'Annoy Albert',
+    choreWeight: 99,
+  },
+  {
+    choreId: '10',
+    choreName: 'Do nothing',
+    choreWeight: 10,
+  },
 ];
 
 export function initFirebaseChores() {

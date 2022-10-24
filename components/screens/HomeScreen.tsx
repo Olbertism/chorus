@@ -1,10 +1,10 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
+import { getAuth } from 'firebase/auth';
 import { Pressable, Text, View } from 'react-native';
 import { styles } from '../../styles/constants';
-import Header from '../Header';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TabParamList } from '../../util/types';
-import { getAuth } from 'firebase/auth';
+import Header from '../Header';
 
 type Props = NativeStackScreenProps<TabParamList, 'Dashboard'>;
 

@@ -28,6 +28,7 @@ export type ChoreLogParams = {
   teamName: string;
   timestamp: number;
   userId: string;
+  userName: string;
 };
 
 export type ChoreLogEntry = {

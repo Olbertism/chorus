@@ -1,26 +1,27 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { onValue, ref, push, child, update } from 'firebase/database';
 import { StatusBar } from 'expo-status-bar';
+import { child, onValue, push, ref, update } from 'firebase/database';
 import { useEffect, useState } from 'react';
 import {
-  Text,
-  View,
-  SafeAreaView,
   FlatList,
-  TouchableOpacity,
-  ViewStyle,
-  TextStyle,
   Pressable,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
 } from 'react-native';
 import { colors, styles } from '../../styles/constants';
 import { Chore } from '../../util/database/chores';
+import { database } from '../../util/firebase/firebase';
 import {
   LogEntryCreatorWrapper,
   RootStackParamList,
   TeamMemberDataSnapshot,
 } from '../../util/types';
 import Header from '../Header';
-import { database } from '../../util/firebase/firebase';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'NewEntry'>;
 
@@ -130,7 +131,13 @@ export default function NewEntry({ navigation, route }: Props) {
     return (
       <ChoreItem
         item={item}
-        onPress={() => setSelectedId(item.choreId)}
+        onPress={() => {
+          if (selectedId === item.choreId) {
+            setSelectedId(null);
+          } else {
+            setSelectedId(item.choreId);
+          }
+        }}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
       />
@@ -150,17 +157,21 @@ export default function NewEntry({ navigation, route }: Props) {
       <StatusBar translucent={true} />
       <Header label="Log a new chore" />
       <View style={styles.mainWrapper}>
-        <SafeAreaView style={styles.flatListWrapper}>
-          <FlatList
-            data={chores}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.choreId}
-            extraData={selectedId}
-            ItemSeparatorComponent={() => (
-              <View style={styles.flatListSeperator} />
-            )}
-          />
-        </SafeAreaView>
+        <View style={{ height: selectedId ? '80%' : '95%' }}>
+          <View style={styles.flatListWrapper}>
+            <FlatList
+              data={chores}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.choreId}
+              extraData={selectedId}
+              persistentScrollbar
+              showsVerticalScrollIndicator
+              ItemSeparatorComponent={() => (
+                <View style={styles.flatListSeperator} />
+              )}
+            />
+          </View>
+        </View>
         {selectedId ? (
           <>
             <View style={styles.buttonContainer}>
