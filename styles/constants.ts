@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     color: colors.accent,
-    fontFamily: 'Poppins_400Regular'
+    fontFamily: 'Poppins_400Regular',
   },
   inviteBox: {
     flexDirection: 'row',
@@ -66,10 +66,16 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.secondary,
   },
+  statsMainWrapper: {
+    flex: 1,
+    width: '90%',
+    marginLeft: '5%',
+  },
   headline: {
     color: colors.primary,
     fontSize: 18,
-    fontFamily: 'Poppins_400Regular'
+    fontFamily: 'Poppins_400Regular',
+    marginBottom: 5,
   },
   button: {
     alignItems: 'center',
@@ -83,13 +89,28 @@ export const styles = StyleSheet.create({
     width: '65%',
     margin: 10,
   },
+  newEntryButtonBox: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
   text: {
     color: colors.secondary,
     fontSize: 16,
-    fontFamily: 'Poppins_400Regular'
+    fontFamily: 'Poppins_400Regular',
+  },
+  statsEntryTitle: {
+    color: colors.secondary,
+    fontSize: 16,
+    fontFamily: 'Poppins_400Regular',
+    marginBottom: 3,
+  },
+  statsEntryText: {
+    color: colors.secondary,
+    fontSize: 14,
+    fontFamily: 'Poppins_400Regular',
   },
   flatListWrapper: {
-    width: '70%',
+    width: '100%',
   },
   flatListItem: {
     padding: 15,
@@ -100,11 +121,39 @@ export const styles = StyleSheet.create({
   },
   flatListText: {
     fontSize: 16,
-    fontFamily: 'Poppins_400Regular'
+    fontFamily: 'Poppins_400Regular',
   },
   flatListSeperator: {
     height: 8,
     width: '100%',
     backgroundColor: colors.secondary,
   },
+  statEntryWrapper: {
+    backgroundColor: colors.primary,
+    padding: 4,
+    borderRadius: 8,
+    marginBottom: 6,
+  },
+  statsOverviewUsername: {
+    color: colors.primary,
+    fontSize: 17,
+    fontFamily: 'Poppins_400Regular',
+    marginBottom: 3,
+  },
+  statsOverviewBox: {
+    flex: 1,
+    width: '85%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  statsOverviewText: {
+    color: colors.text,
+    fontSize: 16,
+    fontFamily: 'Poppins_400Regular',
+  },
+});
+
+export const statsContentContainer = StyleSheet.create({
+  contentContainer: { justifyContent: 'center' },
 });

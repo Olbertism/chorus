@@ -89,6 +89,7 @@ export default function NewEntry({ navigation, route }: Props) {
   const [chores, setChores] = useState<Chore[]>([]);
   const [teamId, setTeamId] = useState<string | null>('');
   const [teamName, setTeamName] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const uid = route.params.uid;
   const userMail = route.params.userMail;
@@ -118,8 +119,10 @@ export default function NewEntry({ navigation, route }: Props) {
             setTeamName(team.val().teamName);
           }
         }
+        setLoading(false)
       });
     });
+
   }, [userMail]);
 
   const renderItem = ({ item }: { item: Chore }) => {
@@ -143,6 +146,18 @@ export default function NewEntry({ navigation, route }: Props) {
       />
     );
   };
+
+  if (loading) {
+    return (
+      <>
+        <StatusBar translucent={true} />
+        <Header label="Log a new chore" />
+        <View style={styles.mainWrapper}>
+          <Text>Loading data...</Text>
+        </View>
+      </>
+    );
+  }
 
   if (!userMail) {
     return <Text>An error occured</Text>;
@@ -173,7 +188,7 @@ export default function NewEntry({ navigation, route }: Props) {
           </View>
         </View>
         {selectedId ? (
-          <>
+          <View>
             <View style={styles.buttonContainer}>
               <Pressable
                 style={styles.button}
@@ -206,7 +221,7 @@ export default function NewEntry({ navigation, route }: Props) {
                 <Text style={styles.text}>Submit</Text>
               </Pressable>
             </View>
-          </>
+          </View>
         ) : null}
       </View>
     </>

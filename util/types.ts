@@ -66,3 +66,9 @@ export type LogEntryCreatorWrapper = {
 export type TeamEntry = {
   teamMember: string;
 };
+
+export type MemberLog = {
+  userName: string;
+  totalChoreCounts: number;
+  totalChoreWeights: number;
+}
