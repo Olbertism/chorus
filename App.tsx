@@ -12,6 +12,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { useCallback, useEffect, useState } from 'react';
 import CreateNewTeam from './components/screens/CreateNewTeamScreen';
+import EditChoreList from './components/screens/EditChoreListScreen';
 import EntryDefaults from './components/screens/EditDefaultsScreen';
 import Dashboard from './components/screens/HomeScreen';
 import InviteToTeam from './components/screens/InviteToTeamScreen';
@@ -84,6 +85,7 @@ function RootStack({ user }: { user: User | null }) {
           <Stack.Screen name="Statistics" component={Statistics} />
           <Stack.Screen name="CreateNewTeam" component={CreateNewTeam} />
           <Stack.Screen name="InviteToTeam" component={InviteToTeam} />
+          <Stack.Screen name="EditChoreList" component={EditChoreList} />
         </>
       ) : (
         <>

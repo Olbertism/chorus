@@ -4,6 +4,7 @@ export type Chore = {
   choreId: string;
   choreName: string;
   choreWeight: number;
+  isSelected?: boolean;
 };
 
 export const chores = [

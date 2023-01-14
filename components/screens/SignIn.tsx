@@ -1,10 +1,10 @@
+import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { styles } from '../../styles/constants';
-import Header from '../Header';
-import { Ionicons } from '@expo/vector-icons';
 import { handleSignIn } from '../../util/firebase/firebase';
+import Header from '../Header';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -53,7 +53,7 @@ export default function SignIn() {
       <Header label="Sign In" />
       <View style={styles.mainWrapper}>
         <View style={styles.form}>
-          <View>
+          <View style={styles.formTextInputWrapper}>
             <TextInput
               defaultValue={email}
               onChangeText={handleEmailChange}
@@ -61,7 +61,7 @@ export default function SignIn() {
               style={styles.formTextInput}
             />
           </View>
-          <View>
+          <View style={styles.formTextInputWrapper}>
             <TextInput
               defaultValue={password}
               onChangeText={handlePasswordChange}

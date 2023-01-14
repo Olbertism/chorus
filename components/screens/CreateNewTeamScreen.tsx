@@ -1,18 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import {
-  Pressable,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-import { colors, styles } from '../../styles/constants';
-import Header from '../Header';
 import { AntDesign } from '@expo/vector-icons';
-import { child, push, ref, update } from 'firebase/database';
-import { database } from '../../util/firebase/firebase';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StatusBar } from 'expo-status-bar';
+import { child, push, ref, update } from 'firebase/database';
+import { useState } from 'react';
+import { Pressable, Text, TextInput, View } from 'react-native';
+import { colors, styles } from '../../styles/constants';
+import { database } from '../../util/firebase/firebase';
 import { RootStackParamList, TeamCreatorWrapper } from '../../util/types';
+import Header from '../Header';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateNewTeam'>;
 
@@ -99,12 +94,12 @@ export default function CreateNewTeam({ route }: Props) {
         </View>
 
         <Text style={styles.headline}>Currently invited:</Text>
-        <View>
-          <Text>You :-&#41;</Text>
+        <View style={{ marginBottom: 15 }}>
+          <Text style={styles.copyText}>You :-&#41;</Text>
           {invitationList.map((entry) => {
             return (
               <View key={entry}>
-                <Text>{entry}</Text>
+                <Text style={styles.copyText}>{entry}</Text>
                 <AntDesign
                   name="minuscircle"
                   size={24}

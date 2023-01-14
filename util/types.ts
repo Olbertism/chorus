@@ -6,6 +6,7 @@ export type RootStackParamList = {
   Statistics: { uid: string; userMail: string | null; userName: string };
   CreateNewTeam: { userMail: string | null };
   InviteToTeam: { userMail: string | null };
+  EditChoreList: { userMail: string | null };
   Start: undefined;
   SignUp: undefined;
   SignIn: undefined;

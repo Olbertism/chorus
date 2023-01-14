@@ -4,6 +4,7 @@ import { child, onValue, push, ref, update } from 'firebase/database';
 import { useEffect, useState } from 'react';
 import {
   FlatList,
+  GestureResponderEvent,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -32,7 +33,7 @@ const ChoreItem = ({
   textColor,
 }: {
   item: Chore;
-  onPress: any;
+  onPress: ((event: GestureResponderEvent) => void) | undefined;
   backgroundColor: ViewStyle;
   textColor: TextStyle;
 }) => (
@@ -95,6 +96,7 @@ export default function NewEntry({ navigation, route }: Props) {
   const userMail = route.params.userMail;
   const userName = route.params.userName;
 
+  // fetch chore list
   useEffect(() => {
     // use return of onValue to cleanup (unsubscribe func)
     return onValue(ref(database, '/chores'), (snapshot) => {
@@ -103,6 +105,7 @@ export default function NewEntry({ navigation, route }: Props) {
       snapshot.forEach((chore) => {
         choreArray.push({ choreId: chore.key, ...chore.val() });
       });
+      console.log(choreArray);
       setChores(choreArray);
     });
   }, []);
@@ -110,6 +113,7 @@ export default function NewEntry({ navigation, route }: Props) {
   useEffect(() => {
     // use return of onValue to cleanup (unsubscribe func)
     return onValue(ref(database, '/teams'), (snapshot) => {
+      console.log(snapshot.val());
       snapshot.forEach((team) => {
         const currentTeamMembers = team.val().members as TeamMemberDataSnapshot;
         const currentTeamId = team.key;
@@ -119,10 +123,9 @@ export default function NewEntry({ navigation, route }: Props) {
             setTeamName(team.val().teamName);
           }
         }
-        setLoading(false)
+        setLoading(false);
       });
     });
-
   }, [userMail]);
 
   const renderItem = ({ item }: { item: Chore }) => {

@@ -52,6 +52,18 @@ export default function Settings({ navigation }: Props) {
         <View style={styles.buttonContainer}>
           <Pressable
             style={styles.button}
+            onPress={() =>
+              navigation.navigate('EditChoreList', {
+                userMail: user.email,
+              })
+            }
+          >
+            <Text style={styles.text}>Edit chore list</Text>
+          </Pressable>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Pressable
+            style={styles.button}
             onPress={() => resetDefaultEntries()}
           >
             <Text style={styles.text}>Reset default chores</Text>

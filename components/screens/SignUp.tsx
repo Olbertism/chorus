@@ -1,10 +1,11 @@
+import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { styles } from '../../styles/constants';
-import Header from '../Header';
-import { Ionicons } from '@expo/vector-icons';
 import { handleSignUp } from '../../util/firebase/firebase';
+import Header from '../Header';
 
 export default function SignUp() {
   const [name, setName] = useState('');
@@ -63,9 +64,9 @@ export default function SignUp() {
     <>
       <StatusBar translucent={true} />
       <Header label="Sign Up" />
-      <View style={styles.mainWrapper}>
+      <KeyboardAwareScrollView>
         <View style={styles.form}>
-          <View>
+          <View style={styles.formTextInputWrapper}>
             <TextInput
               defaultValue={name}
               onChangeText={handleNameChange}
@@ -73,7 +74,7 @@ export default function SignUp() {
               style={styles.formTextInput}
             />
           </View>
-          <View>
+          <View style={styles.formTextInputWrapper}>
             <TextInput
               defaultValue={email}
               onChangeText={handleEmailChange}
@@ -81,7 +82,7 @@ export default function SignUp() {
               style={styles.formTextInput}
             />
           </View>
-          <View>
+          <View style={styles.formTextInputWrapper}>
             <TextInput
               defaultValue={password}
               onChangeText={handlePasswordChange}
@@ -91,7 +92,7 @@ export default function SignUp() {
             />
             <Ionicons name={visibility.name} onPress={toggleVisibility} />
           </View>
-          <View>
+          <View style={styles.formTextInputWrapper}>
             <TextInput
               defaultValue={confirmPassword}
               onChangeText={handleConfirmPasswordChange}
@@ -106,7 +107,7 @@ export default function SignUp() {
             </Pressable>
           </View>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     </>
   );
 }

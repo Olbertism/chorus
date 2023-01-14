@@ -1,13 +1,13 @@
+import { AntDesign } from '@expo/vector-icons';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
+import { onValue, push, ref, update } from 'firebase/database';
 import { useEffect, useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { colors, styles } from '../../styles/constants';
-import Header from '../Header';
-import { AntDesign } from '@expo/vector-icons';
-import { onValue, push, ref, update } from 'firebase/database';
 import { database } from '../../util/firebase/firebase';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList, TeamMemberDataSnapshot } from '../../util/types';
+import Header from '../Header';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'InviteToTeam'>;
 
@@ -93,18 +93,18 @@ export default function InviteToTeam({ route }: Props) {
           {teamMembers.map((entry) => {
             return (
               <View key={entry}>
-                <Text>{entry}</Text>
+                <Text style={styles.copyText}>{entry}</Text>
               </View>
             );
           })}
         </View>
 
         <Text style={styles.headline}>Currently invited:</Text>
-        <View>
+        <View style={{ marginBottom: 15 }}>
           {invitationList.map((entry) => {
             return (
               <View key={entry}>
-                <Text>{entry}</Text>
+                <Text style={styles.copyText}>{entry}</Text>
                 <AntDesign
                   name="minuscircle"
                   size={24}

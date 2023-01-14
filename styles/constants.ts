@@ -27,26 +27,35 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
   },
   form: {
-    width: '80%',
+    width: '85%',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     top: -40,
   },
   formTextInput: {
-    width: '100%',
+    width: '80%',
     height: 45,
     borderRadius: 5,
     borderWidth: 2,
     borderColor: colors.primary,
-    marginBottom: 35,
     padding: 10,
-    fontSize: 16,
+    fontSize: 15,
     color: colors.accent,
     fontFamily: 'Poppins_400Regular',
   },
-  inviteBox: {
+  formTextInputWrapper: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  inviteBox: {
+    width: '85%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 35,
   },
   header: {
     backgroundColor: colors.secondary,
@@ -70,12 +79,13 @@ export const styles = StyleSheet.create({
     flex: 1,
     width: '90%',
     marginLeft: '5%',
+    backgroundColor: colors.secondary,
   },
   headline: {
     color: colors.primary,
     fontSize: 18,
     fontFamily: 'Poppins_400Regular',
-    marginBottom: 5,
+    marginBottom: 10,
   },
   button: {
     alignItems: 'center',
@@ -95,6 +105,11 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: colors.secondary,
+    fontSize: 16,
+    fontFamily: 'Poppins_400Regular',
+  },
+  copyText: {
+    color: colors.text,
     fontSize: 16,
     fontFamily: 'Poppins_400Regular',
   },
