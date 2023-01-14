@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { onValue, push, ref, update } from 'firebase/database';
+import { child, onValue, push, ref, update } from 'firebase/database';
 import { useEffect, useState } from 'react';
 import {
   FlatList,
@@ -17,7 +17,12 @@ import {
 import { colors, styles } from '../../styles/constants';
 import { Chore } from '../../util/database/chores';
 import { database } from '../../util/firebase/firebase';
-import { RootStackParamList, TeamMemberDataSnapshot } from '../../util/types';
+import {
+  ChoreCreatorWrapper,
+  LogEntryCreatorWrapper,
+  RootStackParamList,
+  TeamMemberDataSnapshot,
+} from '../../util/types';
 import Header from '../Header';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EditChoreList'>;
@@ -29,6 +34,7 @@ const ChoreItem = ({
   selectedId,
   backgroundColor,
   textColor,
+  navigation,
 }: {
   item: Chore;
   onPress: ((event: GestureResponderEvent) => void) | undefined;
@@ -36,6 +42,7 @@ const ChoreItem = ({
   selectedId: string | null;
   backgroundColor: ViewStyle;
   textColor: TextStyle;
+  navigation: Props;
 }) => (
   <TouchableOpacity
     onPress={onPress}
@@ -71,8 +78,7 @@ const ChoreItem = ({
             size={24}
             color={colors.secondary}
             onPress={() => {
-              console.log('TODO implement delete function');
-              removeChore();
+              goToRemoveChore(navigation, selectedId);
             }}
           />
         </View>
@@ -81,20 +87,37 @@ const ChoreItem = ({
   </TouchableOpacity>
 );
 
-function removeChore() {
-  // TODO
+function goToRemoveChore({ navigation }: Props, selectedId: string) {
+  navigation.navigate('RemoveChore', {
+    choreId: selectedId,
+  });
 }
 
-function submitNewChore() {
-  // TODO
+function submitNewChore(
+  newChoreName: string,
+  newChoreWeight: string,
+  teamId: string,
+) {
+  const newChoreData = {
+    choreName: newChoreName,
+    choreWeight: Number(newChoreWeight),
+  };
+  const newChoreKey = push(child(ref(database), 'chores')).key;
+  if (!newChoreKey) {
+    return;
+  }
+  const newChoreWrapper = {} as ChoreCreatorWrapper;
+  newChoreWrapper[`/chores/${teamId}/${newChoreKey}`] = newChoreData;
+
+  return update(ref(database), newChoreWrapper);
 }
 
-export default function EditChoreList({ route }: Props) {
+export default function EditChoreList({ navigation, route }: Props) {
   const [chores, setChores] = useState<Chore[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const [newChoreName, setNewChoreName] = useState('');
-  const [newChoreWeight, setNewChoreWeight] = useState(0);
+  const [newChoreWeight, setNewChoreWeight] = useState('');
 
   const [teamId, setTeamId] = useState<string | null>('');
   const [teamName, setTeamName] = useState('');
@@ -139,8 +162,8 @@ export default function EditChoreList({ route }: Props) {
     setNewChoreName(text);
   };
 
-  const handleNewChoreWeightChange = (inputWeight: string) => {
-    setNewChoreWeight(Number(inputWeight));
+  const handleNewChoreWeightChange = (weight: string) => {
+    setNewChoreWeight(weight);
   };
 
   /*   const handleAddToInvitation = (mailAddress: string) => {
@@ -170,6 +193,7 @@ export default function EditChoreList({ route }: Props) {
         // isSelected={isSelected}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
+        navigation={{ navigation, route }}
       />
     );
   };
@@ -196,9 +220,9 @@ export default function EditChoreList({ route }: Props) {
             onChangeText={handleNewChoreNameChange}
           />
           <TextInput
-            placeholder="Chore weight"
+            placeholder="Weight"
             style={styles.formWeightInput}
-            defaultValue={newChoreName}
+            defaultValue={newChoreWeight}
             onChangeText={handleNewChoreWeightChange}
           />
           <AntDesign
@@ -206,7 +230,9 @@ export default function EditChoreList({ route }: Props) {
             size={24}
             color={colors.primary}
             onPress={() => {
-              submitNewChore();
+              submitNewChore(newChoreName, newChoreWeight, teamId)?.catch(
+                (error) => console.log(error),
+              );
             }}
           />
         </View>

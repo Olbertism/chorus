@@ -44,6 +44,17 @@ export const styles = StyleSheet.create({
     color: colors.accent,
     fontFamily: 'Poppins_400Regular',
   },
+  formWeightInput: {
+    width: '20%',
+    height: 45,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: colors.primary,
+    padding: 10,
+    fontSize: 15,
+    color: colors.accent,
+    fontFamily: 'Poppins_400Regular',
+  },
   formTextInputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -60,10 +60,11 @@ export const chores = [
   },
 ];
 
-export function initFirebaseChores() {
+export function initFirebaseChores(teamId: string) {
   const db = getDatabase();
+  const errors = []
   for (const chore of chores) {
-    set(ref(db, 'chores/' + chore.choreId), {
+    set(ref(db, `chores/${teamId}/` + chore.choreId), {
       choreName: chore.choreName,
       choreWeight: chore.choreWeight,
     })
@@ -72,7 +73,9 @@ export function initFirebaseChores() {
       })
       .catch((error) => {
         console.log(error);
+        errors.push(error)
         return false;
       });
   }
+  return !(errors.length > 0);
 }

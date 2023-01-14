@@ -17,6 +17,7 @@ import EntryDefaults from './components/screens/EditDefaultsScreen';
 import Dashboard from './components/screens/HomeScreen';
 import InviteToTeam from './components/screens/InviteToTeamScreen';
 import NewEntry from './components/screens/NewEntryScreen';
+import RemoveChore from './components/screens/RemoveChore';
 import Settings from './components/screens/SettingsScreen';
 import Setup from './components/screens/SetupScreen';
 import SignIn from './components/screens/SignIn';
@@ -86,6 +87,7 @@ function RootStack({ user }: { user: User | null }) {
           <Stack.Screen name="CreateNewTeam" component={CreateNewTeam} />
           <Stack.Screen name="InviteToTeam" component={InviteToTeam} />
           <Stack.Screen name="EditChoreList" component={EditChoreList} />
+          <Stack.Screen name="RemoveChore" component={RemoveChore} />
         </>
       ) : (
         <>
