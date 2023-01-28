@@ -178,6 +178,35 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins_400Regular',
   },
+  modalWrapper: {
+    backgroundColor: colors.primary,
+    borderRadius: 8,
+    padding: 8,
+    display: 'flex',
+    alignItems: 'center',
+  },
+  modalTextInput: {
+    width: '80%',
+    height: 45,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: colors.secondary,
+    padding: 10,
+    fontSize: 15,
+    color: colors.secondary,
+    fontFamily: 'Poppins_400Regular',
+  },
+  modalWeightInput: {
+    width: '20%',
+    height: 45,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: colors.secondary,
+    padding: 10,
+    fontSize: 15,
+    color: colors.secondary,
+    fontFamily: 'Poppins_400Regular',
+  },
 });
 
 export const statsContentContainer = StyleSheet.create({
