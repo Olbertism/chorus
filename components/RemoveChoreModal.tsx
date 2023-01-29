@@ -1,4 +1,4 @@
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { styles } from '../styles/constants';
 import { Chore } from '../util/types';
 import { ModalType } from './screens/EditChoreListScreen';

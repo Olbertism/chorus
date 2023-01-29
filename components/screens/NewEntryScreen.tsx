@@ -96,20 +96,6 @@ export default function NewEntry({ navigation, route }: Props) {
   const userMail = route.params.userMail;
   const userName = route.params.userName;
 
-  // fetch chore list
-  useEffect(() => {
-    // use return of onValue to cleanup (unsubscribe func)
-    return onValue(ref(database, '/chores'), (snapshot) => {
-      // reshaping data into an array...
-      const choreArray = [] as ChoreExtended[];
-      snapshot.forEach((chore) => {
-        choreArray.push({ choreId: chore.key, ...chore.val() });
-      });
-      console.log(choreArray);
-      setChores(choreArray);
-    });
-  }, []);
-
   useEffect(() => {
     // use return of onValue to cleanup (unsubscribe func)
     return onValue(ref(database, '/teams'), (snapshot) => {
@@ -127,6 +113,20 @@ export default function NewEntry({ navigation, route }: Props) {
       });
     });
   }, [userMail]);
+
+  // fetch chore list
+  useEffect(() => {
+    // use return of onValue to cleanup (unsubscribe func)
+    return onValue(ref(database, `/chores/${teamId}`), (snapshot) => {
+      // reshaping data into an array...
+      const choreArray = [] as ChoreExtended[];
+      snapshot.forEach((chore) => {
+        choreArray.push({ choreId: chore.key, ...chore.val() });
+      });
+      console.log(choreArray);
+      setChores(choreArray);
+    });
+  }, [teamId]);
 
   const renderItem = ({ item }: { item: ChoreExtended }) => {
     const backgroundColor =

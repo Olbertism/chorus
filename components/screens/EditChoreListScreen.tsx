@@ -1,5 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import {
   child,
@@ -178,7 +179,7 @@ export default function EditChoreList({ route }: Props) {
       setEditedChoreName(selectedChore.choreName);
       setEditedChoreWeight(selectedChore.choreWeight.toString());
     }
-  }, [selectedChore])
+  }, [selectedChore]);
 
   const handleNewChoreName = (text: string) => {
     setNewChoreName(text);
@@ -273,6 +274,7 @@ export default function EditChoreList({ route }: Props) {
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
+          paddingTop: Constants.statusBarHeight / 2 + 150,
         }}
       >
         {activeModal !== 'none' ? (
@@ -300,24 +302,33 @@ export default function EditChoreList({ route }: Props) {
         ) : (
           <>
             <Text style={styles.headline}>Add new chore:</Text>
-            <View style={styles.inviteBox}>
-              <TextInput
-                placeholder="Chore name"
-                style={styles.formTextInput}
-                defaultValue={newChoreName}
-                onChangeText={handleNewChoreName}
-              />
-              <TextInput
-                placeholder="Weight"
-                style={styles.formWeightInput}
-                defaultValue={newChoreWeight}
-                onChangeText={handleNewChoreWeight}
-              />
+            <View style={{ display: 'flex' , flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ display: 'flex' }}>
+                <View style={styles.formTextInputWrapper}>
+                  <TextInput
+                    placeholder="Chore name"
+                    style={styles.formTextInput}
+                    defaultValue={newChoreName}
+                    onChangeText={handleNewChoreName}
+                  />
+                </View>
+                <View>
+                  <TextInput
+                    placeholder="Weight"
+                    style={styles.formWeightInput}
+                    defaultValue={newChoreWeight}
+                    onChangeText={handleNewChoreWeight}
+                  />
+                </View>
+              </View>
               <AntDesign
                 name="pluscircle"
                 size={24}
                 color={colors.primary}
                 onPress={() => {
+                  if (newChoreName === '' || newChoreWeight === '') {
+                    return;
+                  }
                   submitNewChore(newChoreName, newChoreWeight, teamId)?.catch(
                     (error) => console.log(error),
                   );

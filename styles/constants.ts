@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Poppins_400Regular',
   },
   formWeightInput: {
-    width: '20%',
+    width: '25%',
     height: 45,
     borderRadius: 5,
     borderWidth: 2,
