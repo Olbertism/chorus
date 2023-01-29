@@ -7,7 +7,6 @@ export type RootStackParamList = {
   CreateNewTeam: { userMail: string | null };
   InviteToTeam: { userMail: string | null };
   EditChoreList: { userMail: string | null };
-  RemoveChore: { choreId: string };
   Start: undefined;
   SignUp: undefined;
   SignIn: undefined;
@@ -79,6 +78,11 @@ export type Chore = {
   choreName: string;
   choreWeight: number;
 };
+
+export interface ChoreExtended extends Chore {
+  choreId: string;
+  isSelected?: boolean;
+}
 
 export type ChoreCreatorWrapper = {
   [key: string]: Chore;

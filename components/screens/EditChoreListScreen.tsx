@@ -1,7 +1,15 @@
 import { AntDesign } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { child, onValue, push, ref, remove, set, update } from 'firebase/database';
+import {
+  child,
+  onValue,
+  push,
+  ref,
+  remove,
+  set,
+  update,
+} from 'firebase/database';
 import { useEffect, useState } from 'react';
 import {
   FlatList,
@@ -15,10 +23,11 @@ import {
   ViewStyle,
 } from 'react-native';
 import { colors, styles } from '../../styles/constants';
-import { Chore } from '../../util/database/chores';
+
 import { database } from '../../util/firebase/firebase';
 import {
   ChoreCreatorWrapper,
+  ChoreExtended,
   LogEntryCreatorWrapper,
   RootStackParamList,
   TeamMemberDataSnapshot,
@@ -29,25 +38,22 @@ import RemoveChoreModal from '../RemoveChoreModal';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EditChoreList'>;
 
+export type ModalType = 'none' | 'editChore' | 'removeChore';
+
 const ChoreItem = ({
   item,
   onPress,
   selectedId,
   backgroundColor,
   textColor,
-  setShowEditModal,
   setActiveModal,
-  setShowRemoveModal,
-  navigation,
 }: {
-  item: Chore;
+  item: ChoreExtended;
   onPress: ((event: GestureResponderEvent) => void) | undefined;
   selectedId: string | null;
   backgroundColor: ViewStyle;
   textColor: TextStyle;
-  setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowRemoveModal: React.Dispatch<React.SetStateAction<boolean>>;
-  navigation: Props;
+  setActiveModal: React.Dispatch<React.SetStateAction<ModalType>>;
 }) => (
   <TouchableOpacity
     onPress={onPress}
@@ -76,7 +82,6 @@ const ChoreItem = ({
             color={colors.secondary}
             onPress={() => {
               setActiveModal('editChore');
-              setShowEditModal(true);
             }}
           />
           <AntDesign
@@ -85,7 +90,6 @@ const ChoreItem = ({
             color={colors.secondary}
             onPress={() => {
               setActiveModal('removeChore');
-              setShowRemoveModal(true);
             }}
           />
         </View>
@@ -93,12 +97,6 @@ const ChoreItem = ({
     </View>
   </TouchableOpacity>
 );
-
-function goToRemoveChore({ navigation }: Props, selectedId: string) {
-  navigation.navigate('RemoveChore', {
-    choreId: selectedId,
-  });
-}
 
 function submitNewChore(
   newChoreName: string,
@@ -119,28 +117,26 @@ function submitNewChore(
   return update(ref(database), newChoreWrapper);
 }
 
-export default function EditChoreList({ navigation, route }: Props) {
-  const [chores, setChores] = useState<Chore[]>([]);
+export default function EditChoreList({ route }: Props) {
+  const [chores, setChores] = useState<ChoreExtended[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [selectedChore, setSelectedChore] = useState<Chore | null>(null);
+  const [selectedChore, setSelectedChore] = useState<ChoreExtended | null>(
+    null,
+  );
 
   const [newChoreName, setNewChoreName] = useState('');
   const [newChoreWeight, setNewChoreWeight] = useState('');
 
-  const [activeModal, setActiveModal] = useState('none');
+  const [activeModal, setActiveModal] = useState<ModalType>('none');
 
-  const [showEditModal, setShowEditModal] = useState(false);
   const [editedChoreName, setEditedChoreName] = useState('');
   const [editedChoreWeight, setEditedChoreWeight] = useState('');
 
-  const [showRemoveModal, setShowRemoveModal] = useState(false);
-
   const [teamId, setTeamId] = useState<string | null>('');
-  const [teamName, setTeamName] = useState('');
-  const [teamMembers, setTeamMembers] = useState<string[]>([]);
 
   const userMail = route.params.userMail;
 
+  // fetch teamId
   useEffect(() => {
     return onValue(ref(database, '/teams'), (snapshot) => {
       snapshot.forEach((team) => {
@@ -153,16 +149,13 @@ export default function EditChoreList({ navigation, route }: Props) {
 
           if (value.mailAddress === userMail) {
             setTeamId(currentTeamId);
-            setTeamName(team.val().teamName);
           }
         }
-        setTeamMembers(membersMailAddresses);
       });
     });
   }, [userMail]);
 
   // fetch chore list
-  // TODO team id
   useEffect(() => {
     // do not try to fetch data while teamId is not set
     if (!teamId) {
@@ -171,13 +164,21 @@ export default function EditChoreList({ navigation, route }: Props) {
     // use return of onValue to cleanup (unsubscribe func)
     return onValue(ref(database, `/chores/${teamId}`), (snapshot) => {
       // reshaping data into an array...
-      const choreArray = [] as Chore[];
+      const choreArray = [] as ChoreExtended[];
       snapshot.forEach((chore) => {
         choreArray.push({ choreId: chore.key, ...chore.val() });
       });
       setChores(choreArray);
     });
   }, [teamId]);
+
+  // keep modal values up to date when switching between chores
+  useEffect(() => {
+    if (selectedChore) {
+      setEditedChoreName(selectedChore.choreName);
+      setEditedChoreWeight(selectedChore.choreWeight.toString());
+    }
+  }, [selectedChore])
 
   const handleNewChoreName = (text: string) => {
     setNewChoreName(text);
@@ -197,6 +198,14 @@ export default function EditChoreList({ navigation, route }: Props) {
     }).catch((error) => {
       console.log(error);
     });
+    // update selectedChore if previous selectedChore was set
+    if (selectedChore !== null) {
+      const updatedChore = { ...selectedChore };
+      updatedChore.choreName = editedChoreName;
+      updatedChore.choreWeight = Number(editedChoreWeight);
+      console.log('set selected chore to: ', updatedChore);
+      setSelectedChore(updatedChore);
+    }
   };
 
   const removeSelectedChore = () => {
@@ -211,9 +220,9 @@ export default function EditChoreList({ navigation, route }: Props) {
       .catch(() => {
         return false;
       });
-  }
+  };
 
-  const renderItem = ({ item }: { item: Chore }) => {
+  const renderItem = ({ item }: { item: ChoreExtended }) => {
     const backgroundColor =
       item.choreId === selectedId ? colors.primary : colors.secondary;
     const color =
@@ -231,7 +240,8 @@ export default function EditChoreList({ navigation, route }: Props) {
             const currentChore = chores.find((chore) => {
               return chore.choreId === item.choreId;
             });
-            currentChore
+            console.log('currentChore is: ', currentChore);
+            currentChore && currentChore.choreId
               ? setSelectedChore(currentChore)
               : console.log('passed undefined into chore state!');
           }
@@ -240,8 +250,6 @@ export default function EditChoreList({ navigation, route }: Props) {
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
         setActiveModal={setActiveModal}
-        setShowEditModal={setShowEditModal}
-        navigation={{ navigation, route }}
       />
     );
   };
@@ -260,35 +268,35 @@ export default function EditChoreList({ navigation, route }: Props) {
       <Header label="Edit your team chore list" />
       <View
         style={{
-          backgroundColor: showEditModal ? '#bbafaf' : colors.secondary,
+          backgroundColor:
+            activeModal !== 'none' ? '#bbafaf' : colors.secondary,
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
         {activeModal !== 'none' ? (
-          activeModal === 'editChore' ?
-            (<View>
+          activeModal === 'editChore' ? (
+            <View>
               <EditChoreModal
-                setShowEditModal={setShowEditModal}
+                setActiveModal={setActiveModal}
                 selectedId={selectedId}
                 selectedChore={selectedChore}
-                setName = {setEditedChoreName}
-                setWeight={setEditedChoreWeight}
-                saveChangedChoreValues={saveChangedChoreValues}
-              />
-            </View>) : (
-              <View>
-              <RemoveChoreModal
-                setShowEditModal={setShowEditModal}
-                selectedId={selectedId}
-                selectedChore={selectedChore}
-                setName = {setEditedChoreName}
+                setName={setEditedChoreName}
                 setWeight={setEditedChoreWeight}
                 saveChangedChoreValues={saveChangedChoreValues}
               />
             </View>
-            )
+          ) : (
+            <View>
+              <RemoveChoreModal
+                setActiveModal={setActiveModal}
+                selectedId={selectedId}
+                selectedChore={selectedChore}
+                removeSelectedChore={removeSelectedChore}
+              />
+            </View>
+          )
         ) : (
           <>
             <Text style={styles.headline}>Add new chore:</Text>

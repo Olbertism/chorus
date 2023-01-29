@@ -1,21 +1,24 @@
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { styles } from '../styles/constants';
 import { Chore } from '../util/types';
+import { ModalType } from './screens/EditChoreListScreen';
 
 type Props = {
-  setShowRemoveModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setActiveModal: React.Dispatch<React.SetStateAction<ModalType>>;
   selectedId: string | null;
   selectedChore: Chore | null;
+  removeSelectedChore: () => void;
 };
 
 export default function RemoveChoreModal({
-  setShowRemoveModal,
+  setActiveModal,
   selectedId,
   selectedChore,
+  removeSelectedChore,
 }: Props) {
 
   if (selectedId === null) {
-    setShowRemoveModal(false);
+    setActiveModal('none');
     return <Text>An error occurred while selecting a chore</Text>;
   }
 
@@ -29,8 +32,8 @@ export default function RemoveChoreModal({
           <Text
             style={styles.text}
             onPress={() => {
-              saveChangedChoreValues(selectedId);
-              setShowRemoveModal(false);
+              removeSelectedChore();
+              setActiveModal('none');
             }}
           >
             Remove
@@ -39,7 +42,7 @@ export default function RemoveChoreModal({
       </View>
       <View style={styles.buttonContainer}>
         <Pressable style={styles.button}>
-          <Text style={styles.text} onPress={() => setShowEditModal(false)}>
+          <Text style={styles.text} onPress={() => setActiveModal('none')}>
             Cancel
           </Text>
         </Pressable>

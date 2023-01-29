@@ -1,11 +1,11 @@
 import { getDatabase, ref, set } from 'firebase/database';
 
-export type Chore = {
+/* export type Chore = {
   choreId: string;
   choreName: string;
   choreWeight: number;
   isSelected?: boolean;
-};
+}; */
 
 export const chores = [
   {

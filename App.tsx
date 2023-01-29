@@ -87,7 +87,6 @@ function RootStack({ user }: { user: User | null }) {
           <Stack.Screen name="CreateNewTeam" component={CreateNewTeam} />
           <Stack.Screen name="InviteToTeam" component={InviteToTeam} />
           <Stack.Screen name="EditChoreList" component={EditChoreList} />
-          <Stack.Screen name="RemoveChore" component={RemoveChore} />
         </>
       ) : (
         <>

@@ -15,9 +15,9 @@ import {
   ViewStyle,
 } from 'react-native';
 import { colors, styles } from '../../styles/constants';
-import { Chore } from '../../util/database/chores';
 import { database } from '../../util/firebase/firebase';
 import {
+  ChoreExtended,
   LogEntryCreatorWrapper,
   RootStackParamList,
   TeamMemberDataSnapshot,
@@ -32,7 +32,7 @@ const ChoreItem = ({
   backgroundColor,
   textColor,
 }: {
-  item: Chore;
+  item: ChoreExtended;
   onPress: ((event: GestureResponderEvent) => void) | undefined;
   backgroundColor: ViewStyle;
   textColor: TextStyle;
@@ -47,7 +47,7 @@ const ChoreItem = ({
 
 function submitEntry(
   choreId: string,
-  chores: Chore[],
+  chores: ChoreExtended[],
   uid: string,
   userName: string,
   teamId: string,
@@ -87,7 +87,7 @@ function submitEntry(
 
 export default function NewEntry({ navigation, route }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [chores, setChores] = useState<Chore[]>([]);
+  const [chores, setChores] = useState<ChoreExtended[]>([]);
   const [teamId, setTeamId] = useState<string | null>('');
   const [teamName, setTeamName] = useState('');
   const [loading, setLoading] = useState(true);
@@ -101,7 +101,7 @@ export default function NewEntry({ navigation, route }: Props) {
     // use return of onValue to cleanup (unsubscribe func)
     return onValue(ref(database, '/chores'), (snapshot) => {
       // reshaping data into an array...
-      const choreArray = [] as Chore[];
+      const choreArray = [] as ChoreExtended[];
       snapshot.forEach((chore) => {
         choreArray.push({ choreId: chore.key, ...chore.val() });
       });
@@ -128,7 +128,7 @@ export default function NewEntry({ navigation, route }: Props) {
     });
   }, [userMail]);
 
-  const renderItem = ({ item }: { item: Chore }) => {
+  const renderItem = ({ item }: { item: ChoreExtended }) => {
     const backgroundColor =
       item.choreId === selectedId ? colors.primary : colors.secondary;
     const color =
