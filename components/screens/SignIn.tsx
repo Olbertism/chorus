@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
-import { styles } from '../../styles/constants';
+import { colors, styles } from '../../styles/constants';
 import { handleSignIn } from '../../util/firebase/firebase';
 import Header from '../Header';
 
@@ -51,7 +51,13 @@ export default function SignIn() {
     <>
       <StatusBar translucent={true} />
       <Header label="Sign In" />
-      <View style={styles.mainWrapper}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          backgroundColor: colors.secondary,
+        }}
+      >
         <View style={styles.form}>
           <View style={styles.formTextInputWrapper}>
             <TextInput
@@ -61,7 +67,13 @@ export default function SignIn() {
               style={styles.formTextInput}
             />
           </View>
-          <View style={styles.formTextInputWrapper}>
+          <View
+            style={{
+              ...styles.formTextInputWrapper,
+              width: '80%',
+              marginBottom: 80,
+            }}
+          >
             <TextInput
               defaultValue={password}
               onChangeText={handlePasswordChange}
@@ -69,7 +81,12 @@ export default function SignIn() {
               secureTextEntry={secureTextEntry()}
               style={styles.formTextInput}
             />
-            <Ionicons name={visibility.name} onPress={toggleVisibility} />
+            <Ionicons
+              name={visibility.name}
+              onPress={toggleVisibility}
+              size={30}
+              color={colors.primary}
+            />
           </View>
 
           <View style={styles.buttonContainer}>

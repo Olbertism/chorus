@@ -34,10 +34,12 @@ export default function InviteToTeam({ route }: Props) {
   useEffect(() => {
     return onValue(ref(database, '/teams'), (snapshot) => {
       snapshot.forEach((team) => {
-        const currentTeamMembers = team.val().members as TeamMemberDataSnapshot;
+        const currentTeamMembers = team.val().members as TeamMemberDataSnapshot | undefined;
         const currentTeamId = team.key;
         const membersMailAddresses = [];
-
+        if (currentTeamMembers === undefined) {
+          return;
+        }
         for (const value of Object.values(currentTeamMembers)) {
           membersMailAddresses.push(value.mailAddress);
 
@@ -62,8 +64,20 @@ export default function InviteToTeam({ route }: Props) {
     }
   };
 
-  if (!userMail || !teamId) {
-    return <Text>An error occured</Text>;
+  if (!teamId) {
+    return (
+      <View style={styles.mainWrapper}>
+        <Text style={styles.copyText}>You need to be in a Team first!</Text>
+      </View>
+    );
+  }
+
+  if (!userMail) {
+    return (
+      <View style={styles.mainWrapper}>
+        <Text style={styles.copyText}>An error occured</Text>
+      </View>
+    );
   }
 
   return (

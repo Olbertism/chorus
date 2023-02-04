@@ -167,7 +167,11 @@ export default function NewEntry({ navigation, route }: Props) {
   }
 
   if (!teamName || !teamId) {
-    return <Text>You need to create a Team first!</Text>;
+    return (
+      <View style={styles.mainWrapper}>
+        <Text style={styles.copyText}>You need to create a Team first!</Text>
+      </View>
+    );
   }
 
   return (

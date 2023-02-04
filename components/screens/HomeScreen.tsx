@@ -33,10 +33,12 @@ export default function Dashboard({ navigation, route }: Props) {
   return (
     <>
       <StatusBar translucent={true} />
-      <View style={{height: '15%', backgroundColor: colors.secondary }}/>
+      <View style={{ height: '15%', backgroundColor: colors.secondary }} />
       <Header label="You're at home, baby." />
-      <Text>{userMail}</Text>
       <View style={styles.mainWrapper}>
+        <Text style={{ ...styles.copyText, paddingBottom: 90 }}>
+          Hello, {userName ? userName : 'TODO: refetch after signup'}
+        </Text>
         <View style={styles.buttonContainer}>
           <Pressable
             style={styles.button}

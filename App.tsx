@@ -17,7 +17,6 @@ import EntryDefaults from './components/screens/EditDefaultsScreen';
 import Dashboard from './components/screens/HomeScreen';
 import InviteToTeam from './components/screens/InviteToTeamScreen';
 import NewEntry from './components/screens/NewEntryScreen';
-import RemoveChore from './components/screens/RemoveChore';
 import Settings from './components/screens/SettingsScreen';
 import Setup from './components/screens/SetupScreen';
 import SignIn from './components/screens/SignIn';
@@ -26,6 +25,8 @@ import Start from './components/screens/StartScreen';
 import Statistics from './components/screens/StatsScreen';
 import { firebaseConfig } from './util/firebase/firebase';
 import { RootStackParamList } from './util/types';
+import { Ionicons } from '@expo/vector-icons';
+import { colors } from './styles/constants';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -36,7 +37,25 @@ type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 function Home({ route }: HomeProps) {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          console.log(route)
+          let iconName;
+
+          if (route.name === 'Dashboard') {
+            iconName = focused
+              ? 'ios-information-circle'
+              : 'ios-information-circle-outline';
+          } else if (route.name === 'Settings') {
+            iconName = focused ? 'ios-list' : 'ios-list-outline';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.text,
+      })}
+    >
       <Tab.Screen
         name="Dashboard"
         component={Dashboard}

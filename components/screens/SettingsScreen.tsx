@@ -10,7 +10,7 @@ import { database } from '../../util/firebase/firebase';
 import { RootStackParamList, TeamMemberDataSnapshot } from '../../util/types';
 import Header from '../Header';
 
-function resetDefaultEntries(teamId: string) {
+export function resetDefaultEntries(teamId: string) {
   const result = initFirebaseChores(teamId);
   return result;
 }
@@ -32,8 +32,11 @@ export default function Settings({ navigation, route }: Props) {
     return onValue(ref(database, '/teams'), (snapshot) => {
       console.log(snapshot.val());
       snapshot.forEach((team) => {
-        const currentTeamMembers = team.val().members as TeamMemberDataSnapshot;
+        const currentTeamMembers = team.val().members as TeamMemberDataSnapshot | undefined;
         const currentTeamId = team.key;
+        if (currentTeamMembers === undefined) {
+          return;
+        }
         for (const value of Object.values(currentTeamMembers)) {
           if (value.mailAddress === userMail) {
             setTeamId(currentTeamId);
@@ -45,7 +48,11 @@ export default function Settings({ navigation, route }: Props) {
   }, [userMail]);
 
   if (!user) {
-    return <Text>An error occured</Text>;
+    return (
+      <View style={styles.mainWrapper}>
+        <Text style={styles.copyText}>An error occured</Text>
+      </View>
+    );
   }
 
   return (

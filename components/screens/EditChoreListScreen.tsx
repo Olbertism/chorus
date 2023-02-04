@@ -256,7 +256,11 @@ export default function EditChoreList({ route }: Props) {
   };
 
   if (!teamId) {
-    return <Text>You need to be in a team first</Text>;
+    return (
+      <View style={styles.mainWrapper}>
+        <Text style={styles.copyText}>You need to create a Team first!</Text>
+      </View>
+    );
   }
 
   /* if (!userMail) {
@@ -302,7 +306,13 @@ export default function EditChoreList({ route }: Props) {
         ) : (
           <>
             <Text style={styles.headline}>Add new chore:</Text>
-            <View style={{ display: 'flex' , flexDirection: 'row', alignItems: 'center'}}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
               <View style={{ display: 'flex' }}>
                 <View style={styles.formTextInputWrapper}>
                   <TextInput

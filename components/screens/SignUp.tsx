@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { styles } from '../../styles/constants';
+import { colors, styles } from '../../styles/constants';
 import { handleSignUp } from '../../util/firebase/firebase';
 import Header from '../Header';
 
@@ -82,7 +82,7 @@ export default function SignUp() {
               style={styles.formTextInput}
             />
           </View>
-          <View style={styles.formTextInputWrapper}>
+          <View style={{ ...styles.formTextInputWrapper, width: '80%' }}>
             <TextInput
               defaultValue={password}
               onChangeText={handlePasswordChange}
@@ -90,9 +90,14 @@ export default function SignUp() {
               secureTextEntry={secureTextEntry()}
               style={styles.formTextInput}
             />
-            <Ionicons name={visibility.name} onPress={toggleVisibility} />
+            <Ionicons
+              name={visibility.name}
+              onPress={toggleVisibility}
+              size={30}
+              color={colors.primary}
+            />
           </View>
-          <View style={styles.formTextInputWrapper}>
+          <View style={{...styles.formTextInputWrapper, width: '80%'}}>
             <TextInput
               defaultValue={confirmPassword}
               onChangeText={handleConfirmPasswordChange}

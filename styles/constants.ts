@@ -27,11 +27,9 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
   },
   form: {
-    width: '85%',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    top: -40,
   },
   formTextInput: {
     width: '80%',

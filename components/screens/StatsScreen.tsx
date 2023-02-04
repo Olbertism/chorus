@@ -106,7 +106,11 @@ export default function Statistics({ route }: Props) {
   }
 
   if (!teamId) {
-    return <Text>You need to create a team first!</Text>;
+    return (
+      <View style={styles.mainWrapper}>
+        <Text style={styles.copyText}>You need to create a Team first!</Text>
+      </View>
+    );
   }
 
   return (
