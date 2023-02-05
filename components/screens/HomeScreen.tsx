@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import Constants from 'expo-constants';
+
 import { StatusBar } from 'expo-status-bar';
 import { getAuth } from 'firebase/auth';
 import { Pressable, Text, View } from 'react-native';
@@ -61,6 +61,10 @@ export default function Dashboard({ navigation, route }: Props) {
                 uid: uid,
                 userMail: userMail,
                 userName: userName,
+                teamId: route.params.teamId,
+                teamName: route.params.teamName,
+                teamMembers: route.params.teamMembers,
+                teamMemberRefs: route.params.teamMemberRefs,
               })
             }
           >

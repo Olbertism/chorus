@@ -134,7 +134,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Poppins_400Regular',
   },
   flatListWrapper: {
-    width: '100%',
+    // width: '100%',
   },
   flatListItem: {
     padding: 15,
@@ -149,12 +149,12 @@ export const styles = StyleSheet.create({
   },
   flatListSeperator: {
     height: 8,
-    width: '100%',
+    // width: '100%',
     backgroundColor: colors.secondary,
   },
   statEntryWrapper: {
     backgroundColor: colors.primary,
-    padding: 4,
+    padding: 8,
     borderRadius: 8,
     marginBottom: 6,
   },

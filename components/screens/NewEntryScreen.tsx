@@ -156,7 +156,7 @@ export default function NewEntry({ navigation, route }: Props) {
         <StatusBar translucent={true} />
         <Header label="Log a new chore" />
         <View style={styles.mainWrapper}>
-          <Text>Loading data...</Text>
+          <Text style={styles.copyText}>Loading data...</Text>
         </View>
       </>
     );
@@ -179,7 +179,7 @@ export default function NewEntry({ navigation, route }: Props) {
       <StatusBar translucent={true} />
       <Header label="Log a new chore" />
       <View style={styles.mainWrapper}>
-        <View style={{ height: selectedId ? '80%' : '95%' }}>
+        <View style={{ height: selectedId ? '70%' : '95%', width: '85%' }}>
           <View style={styles.flatListWrapper}>
             <FlatList
               data={chores}
@@ -195,7 +195,7 @@ export default function NewEntry({ navigation, route }: Props) {
           </View>
         </View>
         {selectedId ? (
-          <View>
+          <View style={{width: '70%', alignItems: 'center'}}>
             <View style={styles.buttonContainer}>
               <Pressable
                 style={styles.button}

@@ -1,24 +1,83 @@
 export type RootStackParamList = {
-  Home: { uid: string; userMail: string | null; userName: string | null };
+  Home: {
+    uid: string;
+    userMail: string | null;
+    userName: string | null;
+    teamId: string | null;
+    teamName: string | null;
+    teamMembers:
+      | {
+          userName: string;
+          mailAddress: string;
+        }[]
+      | null;
+    teamMemberRefs: string[] | null;
+  };
   NewEntry: { uid: string; userMail: string | null; userName: string };
   EntryDefaults: { choreId: string };
   Setup: undefined;
-  Statistics: { uid: string; userMail: string | null; userName: string };
+  Statistics: {
+    uid: string;
+    userMail: string | null;
+    userName: string;
+    teamId: string | null;
+    teamName: string | null;
+    teamMembers:
+      | {
+          userName: string;
+          mailAddress: string;
+        }[]
+      | null;
+    teamMemberRefs: string[] | null;
+  };
   CreateNewTeam: { userMail: string | null };
   InviteToTeam: { userMail: string | null };
   EditChoreList: { userMail: string | null };
   Start: undefined;
   SignUp: undefined;
   SignIn: undefined;
-  Dashboard: { uid: string; userMail: string | null; userName: string };
-  Settings: { uid: string; userMail: string | null; userName: string };
+  /*   Dashboard: {
+    uid: string;
+    userMail: string | null;
+    userName: string;
+    teamId: string | null;
+    teamName: string | null;
+    teamMemberRefs: string[] | null;
+  }; */
+  /* Settings: { uid: string; userMail: string | null; userName: string }; */
 };
 
 export type TabParamList = {
-  Dashboard: { uid: string; userMail: string | null; userName: string };
+  Dashboard: {
+    uid: string;
+    userMail: string | null;
+    userName: string;
+    teamId: string | null;
+    teamName: string | null;
+    teamMembers:
+      | {
+          userName: string;
+          mailAddress: string;
+        }[]
+      | null;
+    teamMemberRefs: string[] | null;
+  };
   Settings: { uid: string; userMail: string | null; userName: string };
   NewEntry: { uid: string; userMail: string | null; userName: string };
-  Statistics: { uid: string; userMail: string | null; userName: string };
+  Statistics: {
+    uid: string;
+    userMail: string | null;
+    userName: string;
+    teamId: string | null;
+    teamName: string | null;
+    teamMembers:
+      | {
+          userName: string;
+          mailAddress: string;
+        }[]
+      | null;
+    teamMemberRefs: string[] | null;
+  };
 };
 
 export type ChoreLogParams = {
@@ -43,6 +102,7 @@ export type TeamChoreLog = {
 export type TeamMemberDataSnapshot = {
   [key: string]: {
     mailAddress: string;
+    userName: string;
   };
 };
 
@@ -53,6 +113,11 @@ export type TeamMembers = {
     };
   }[];
 };
+
+export type TeamMembersArray = {
+  mailAddress: string;
+  userName: string;
+}[]
 
 export type TeamCreatorWrapper = {
   [key: string]: {

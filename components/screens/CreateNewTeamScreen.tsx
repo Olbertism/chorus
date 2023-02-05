@@ -13,7 +13,7 @@ import { resetDefaultEntries } from './SettingsScreen';
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateNewTeam'>;
 
 async function createNewTeam(
-  name: string,
+  teamName: string,
   inviteArray: string[],
   currentUserMail: string,
   setWasSuccess: React.Dispatch<React.SetStateAction<boolean>>,
@@ -26,7 +26,7 @@ async function createNewTeam(
   }
 
   const newTeamWrapper = {} as TeamCreatorWrapper;
-  newTeamWrapper['/teams/' + newTeamKey] = { teamName: name };
+  newTeamWrapper['/teams/' + newTeamKey] = { teamName: teamName };
   await update(ref(database), newTeamWrapper);
   const teamRef = ref(database, '/teams/' + newTeamKey);
   await update(teamRef, { members: {} });
@@ -35,8 +35,15 @@ async function createNewTeam(
     const newMemberKey = push(
       ref(database, '/teams/' + newTeamKey + '/members'),
     );
-    await update(newMemberKey, { mailAddress: member });
+    await update(newMemberKey, { mailAddress: member, userName: 'Anonymus' });
   }
+  // TODO also add usernames here based
+  // challenge: fetch userData from different users on firebase???
+  // idea: on user creation, add entry to lookup table userMail: userName
+  // if team creation only needs registered users, get data from there
+  // if includes unregistered keep Anonymus as long as user isn't there yet
+
+  // big todo: proper invitation handling for invited people. right now they are just added, no questions asked...
   const defaultChores = resetDefaultEntries(newTeamKey);
   if (!defaultChores) {
     console.error('chore setup on team creation went wrong');

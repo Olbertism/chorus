@@ -20,7 +20,7 @@ export default function EntryDefaults({ navigation, route }: Props) {
       <Header label={selectedChore?.choreName} />
       <View style={styles.mainWrapper}>
         <View>
-          <Text>Here you can change the default log values.</Text>
+          <Text style={styles.copyText}>TODO: Here you can change the default log values.</Text>
         </View>
         <View style={styles.buttonContainer}>
           <Pressable style={styles.button}>
